@@ -1,0 +1,22 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <rect width="128" height="128" rx="28" fill="#FF0033"/>
+
+  <!-- 中心圆（下移） -->
+  <circle cx="64" cy="88" r="20" fill="white"/>
+
+  <!-- 波纹1（最短） -->
+  <path d="M40 74 Q64 52 88 74"
+        stroke="white" stroke-width="10"
+        fill="none" stroke-linecap="round"/>
+
+  <!-- 波纹2（中等） -->
+  <path d="M28 60 Q64 24 100 60"
+        stroke="white" stroke-width="10"
+        fill="none" stroke-linecap="round"/>
+
+  <!-- 波纹3（最长，铺满） -->
+  <path d="M16 46 Q64 -4 112 46"
+        stroke="white" stroke-width="10"
+        fill="none" stroke-linecap="round"/>
+
+</svg>

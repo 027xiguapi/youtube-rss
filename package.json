@@ -1,8 +1,8 @@
 {
-  "name": "wxt-vue-starter",
+  "name": "youtube-rss",
   "description": "manifest.json description",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.1.0",
   "type": "module",
   "scripts": {
     "dev": "wxt",
@@ -19,6 +19,7 @@
     "vue": "^3.5.29"
   },
   "devDependencies": {
+    "@wxt-dev/auto-icons": "^1.1.1",
     "@wxt-dev/module-vue": "^1.0.3",
     "typescript": "^5.9.3",
     "vue-tsc": "^3.2.5",
