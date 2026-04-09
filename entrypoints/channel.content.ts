@@ -87,7 +87,7 @@ export default defineContentScript({
           }
 
           // Extract RSS URL from page HTML
-          const rssLink = document.querySelector('link[rel="alternate"][type="application/rss+xml"]')
+          const rssLink = document.querySelector('link[rel="alternate"][type="application/rss+xml"]') as any
           if (rssLink) {
             channelData.rss_url = rssLink.href
           }
@@ -95,12 +95,12 @@ export default defineContentScript({
           // Extract image and title from meta tags
           const ogImage = document.querySelector('meta[property="og:image"]')
           if (ogImage) {
-            channelData.og_image = ogImage.getAttribute('content')
+            channelData.image = ogImage.getAttribute('content')
           }
 
           const ogTitle = document.querySelector('meta[property="og:title"]')
           if (ogTitle) {
-            channelData.og_title = ogTitle.getAttribute('content')
+            channelData.title = ogTitle.getAttribute('content')
           }
 
           console.log('Extracted channel data:', channelData)

@@ -11,11 +11,16 @@ interface ChannelData {
   video_count?: number
   rss_url?: string
   channel_created_at?: string
+  image?: string
+  og_image?: string
+  og_title?: string
 }
 
 const loading = ref(false)
 const channelData = ref<ChannelData | null>(null)
+const channelsData = ref<ChannelData[]>([])
 const error = ref('')
+const isFeedPage = ref(false)
 
 const extractData = async () => {
   loading.value = true
@@ -25,44 +30,53 @@ const extractData = async () => {
     const [tab] = await browser.tabs.query({ active: true, currentWindow: true })
     if (!tab.id) throw new Error('No active tab found')
 
-    const response = await browser.tabs.sendMessage(tab.id, { action: 'extractChannelData' })
-    channelData.value = response
+    // Check if we're on the feed/channels page
+    const isFeed = tab.url?.includes('youtube.com/feed/channels')
+    isFeedPage.value = isFeed || false
+
+    if (isFeed) {
+      const response = await browser.tabs.sendMessage(tab.id, { action: 'extractChannelsRss' })
+      if (response && response.channels) {
+        channelsData.value = response.channels || []
+      }
+      if (channelsData.value.length === 0) {
+        error.value = 'No channels found on this page'
+      }
+    } else {
+      const response = await browser.tabs.sendMessage(tab.id, { action: 'extractChannelData' })
+      channelData.value = response
+    }
   } catch (e) {
-    error.value = e instanceof Error ? e.message : 'Failed to extract channel data'
+    error.value = e instanceof Error ? e.message : 'Failed to extract data'
     console.error('Error:', e)
   } finally {
     loading.value = false
   }
 }
 
-const copyToClipboard = () => {
-  if (channelData.value) {
-    navigator.clipboard.writeText(JSON.stringify(channelData.value, null, 2))
-  }
+const copyToClipboard = (data: ChannelData | ChannelData[]) => {
+  navigator.clipboard.writeText(JSON.stringify(data, null, 2))
 }
 
-const downloadJSON = () => {
-  if (channelData.value) {
-    const json = JSON.stringify(channelData.value, null, 2)
-    const blob = new Blob([json], { type: 'application/json' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `channel_${channelData.value.channel_id || channelData.value.urlHandle}.json`
-    a.click()
-    URL.revokeObjectURL(url)
-  }
+const downloadJSON = (data: ChannelData | ChannelData[], filename: string) => {
+  const json = JSON.stringify(data, null, 2)
+  const blob = new Blob([json], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = filename
+  a.click()
+  URL.revokeObjectURL(url)
 }
 
-const copyRSSUrl = () => {
-  if (channelData.value?.rss_url) {
-    navigator.clipboard.writeText(channelData.value.rss_url)
-  }
+const copyRSSUrl = (rssUrl: string) => {
+  navigator.clipboard.writeText(rssUrl)
 }
 
 onMounted(() => {
   extractData()
 })
+
 </script>
 
 <template>
@@ -70,7 +84,7 @@ onMounted(() => {
     <h1>YouTube RSS Extractor</h1>
 
     <div v-if="loading" class="loading">
-      <p>Extracting channel data...</p>
+      <p>Extracting {{ isFeedPage ? 'channels' : 'channel' }} data...</p>
     </div>
 
     <div v-else-if="error" class="error">
@@ -78,13 +92,14 @@ onMounted(() => {
       <button @click="extractData">Retry</button>
     </div>
 
-    <div v-else-if="channelData" class="data">
-      <div v-if="channelData.thumbnail_url" class="thumbnail">
-        <img :src="channelData.thumbnail_url" :alt="channelData.title" />
+    <!-- Single Channel View -->
+    <div v-else-if="channelData && !isFeedPage" class="data">
+      <div v-if="channelData.thumbnail_url || channelData.og_image" class="thumbnail">
+        <img :src="channelData.thumbnail_url || channelData.og_image" :alt="channelData.title" />
       </div>
 
       <div class="info">
-        <h2>{{ channelData.title || 'Unknown Channel' }}</h2>
+        <h2>{{ channelData.title || channelData.og_title || 'Unknown Channel' }}</h2>
 
         <div class="field" v-if="channelData.channel_id">
           <label>Channel ID:</label>
@@ -110,20 +125,59 @@ onMounted(() => {
           <label>RSS URL:</label>
           <div class="rss-url">
             <a :href="channelData.rss_url" target="_blank">{{ channelData.rss_url }}</a>
-            <button @click="copyRSSUrl" class="copy-btn">Copy</button>
+            <button @click="copyRSSUrl(channelData.rss_url)" class="copy-btn">Copy</button>
           </div>
         </div>
       </div>
 
       <div class="actions">
-        <button @click="copyToClipboard" class="btn-primary">Copy JSON</button>
-        <button @click="downloadJSON" class="btn-primary">Download JSON</button>
+        <button @click="copyToClipboard(channelData)" class="btn-primary">Copy JSON</button>
+        <button @click="downloadJSON(channelData, `channel_${channelData.channel_id || channelData.urlHandle}.json`)" class="btn-primary">Download JSON</button>
         <button @click="extractData" class="btn-secondary">Refresh</button>
       </div>
     </div>
 
+    <!-- Multiple Channels View (Feed Page) -->
+    <div v-else-if="channelsData.length > 0 && isFeedPage" class="channels-list">
+      <div class="channels-header">
+        <h2>{{ channelsData.length }} Channels Found</h2>
+        <div class="actions">
+          <button @click="copyToClipboard(channelsData)" class="btn-primary">Copy All JSON</button>
+          <button @click="downloadJSON(channelsData, 'channels.json')" class="btn-primary">Download All</button>
+          <button @click="extractData" class="btn-secondary">Refresh</button>
+        </div>
+      </div>
+
+      <div class="channels-grid">
+        <div v-for="channel in channelsData" :key="channel.channel_id" class="channel-card">
+          <div v-if="channel.thumbnail_url" class="card-thumbnail">
+            <img :src="channel.thumbnail_url" :alt="channel.title" />
+          </div>
+
+          <div class="card-info">
+            <h3>{{ channel.title }}</h3>
+
+            <div v-if="channel.subscriber_count" class="card-stat">
+              <span class="label">Subscribers:</span>
+              <span>{{ channel.subscriber_count.toLocaleString() }}</span>
+            </div>
+
+            <div v-if="channel.video_count" class="card-stat">
+              <span class="label">Videos:</span>
+              <span>{{ channel.video_count }}</span>
+            </div>
+
+            <div v-if="channel.rss_url" class="card-rss">
+              <a :href="channel.rss_url" target="_blank" title="Open RSS feed">RSS</a>
+              <button @click="copyRSSUrl(channel.rss_url)" class="copy-btn" title="Copy RSS URL">Copy</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div v-else class="empty">
-      <p>No channel data extracted yet</p>
+      <p>No {{ isFeedPage ? 'channels' : 'channel' }} data extracted yet</p>
       <button @click="extractData">Extract Data</button>
     </div>
   </div>
@@ -146,6 +200,12 @@ h1 {
 h2 {
   margin: 0 0 12px 0;
   font-size: 16px;
+  color: #030303;
+}
+
+h3 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
   color: #030303;
 }
 
@@ -307,5 +367,108 @@ h2 {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+}
+
+/* Channels List Styles */
+.channels-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.channels-header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.channels-header h2 {
+  margin: 0;
+}
+
+.channels-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.channel-card {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.channel-card:hover {
+  background: #f0f0f0;
+}
+
+.card-thumbnail {
+  flex-shrink: 0;
+}
+
+.card-thumbnail img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.card-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.card-info h3 {
+  margin: 0;
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-stat {
+  display: flex;
+  gap: 8px;
+  font-size: 12px;
+  color: #666;
+}
+
+.card-stat .label {
+  font-weight: 600;
+  color: #999;
+}
+
+.card-rss {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.card-rss a {
+  color: #065fd4;
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  background: #e8f0ff;
+  border-radius: 3px;
+}
+
+.card-rss a:hover {
+  background: #d0e0ff;
+}
+
+.card-rss .copy-btn {
+  padding: 2px 6px;
+  font-size: 10px;
 }
 </style>
