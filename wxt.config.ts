@@ -9,6 +9,7 @@ export default defineConfig({
       'https://www.youtube.com/@*',
       'https://www.youtube.com/c/*',
       'https://www.youtube.com/channel/*',
+      'https://www.youtube.com/feed/channels*',
     ],
   },
 });
