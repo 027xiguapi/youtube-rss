@@ -13,44 +13,68 @@ const emit = defineEmits<{
   download: []
 }>()
 
-const thumbnailSrc = props.channel.thumbnail_url || props.channel.og_image
-const title = props.channel.title || props.channel.og_title || 'Unknown Channel'
+const getThumbnailUrl = () => {
+  return props.channel.avatar?.thumbnails?.[0]?.url || ''
+}
+
+const getTitle = () => {
+  return props.channel.title || 'Unknown Channel'
+}
 </script>
 
 <template>
-  <div class="data">
-    <div v-if="thumbnailSrc" class="thumbnail">
-      <img :src="thumbnailSrc" :alt="channel.title" />
+  <div class="channel-detail">
+    <div class="detail-header">
+      <div v-if="getThumbnailUrl()" class="thumbnail">
+        <img :src="getThumbnailUrl()" :alt="getTitle()" />
+      </div>
+
+      <div class="header-info">
+        <h2>{{ getTitle() }}</h2>
+        <p v-if="channel.description" class="description">{{ channel.description }}</p>
+      </div>
     </div>
 
-    <div class="info">
-      <h2>{{ title }}</h2>
-
-      <div class="field" v-if="channel.channel_id">
+    <div class="detail-content">
+      <div v-if="channel.externalId" class="field">
         <label>Channel ID:</label>
-        <code>{{ channel.channel_id }}</code>
+        <code>{{ channel.externalId }}</code>
       </div>
 
-      <div class="field" v-if="channel.subscriber_count">
+      <div v-if="channel.channelUrl" class="field">
+        <label>Channel URL:</label>
+        <a :href="channel.channelUrl" target="_blank" class="url-link">{{ channel.channelUrl }}</a>
+      </div>
+
+      <div v-if="channel.subscriberCount" class="field">
         <label>Subscribers:</label>
-        <span>{{ channel.subscriber_count.toLocaleString() }}</span>
+        <span>{{ channel.subscriberCount.toLocaleString() }}</span>
       </div>
 
-      <div class="field" v-if="channel.video_count">
+      <div v-if="channel.videoCount" class="field">
         <label>Videos:</label>
-        <span>{{ channel.video_count }}</span>
+        <span>{{ channel.videoCount }}</span>
       </div>
 
-      <div class="field" v-if="channel.description">
-        <label>Description:</label>
-        <p class="description">{{ channel.description }}</p>
+      <div v-if="channel.region" class="field">
+        <label>Region:</label>
+        <span>{{ channel.region }}</span>
       </div>
 
-      <div class="field" v-if="channel.rss_url">
+      <div v-if="channel.rssUrl" class="field">
         <label>RSS URL:</label>
         <div class="rss-url">
-          <a :href="channel.rss_url" target="_blank">{{ channel.rss_url }}</a>
-          <button @click="copyRSSUrl(channel.rss_url!)" class="copy-btn">Copy</button>
+          <a :href="channel.rssUrl" target="_blank" class="rss-link">RSS Feed</a>
+          <button @click="copyRSSUrl(channel.rssUrl)" class="copy-btn" title="Copy RSS URL">Copy</button>
+        </div>
+      </div>
+
+      <div v-if="channel.ownerUrls && channel.ownerUrls.length > 0" class="field">
+        <label>Owner URLs:</label>
+        <div class="owner-urls">
+          <a v-for="(url, idx) in channel.ownerUrls" :key="idx" :href="url" target="_blank" class="owner-link">
+            {{ url }}
+          </a>
         </div>
       </div>
     </div>
@@ -64,33 +88,62 @@ const title = props.channel.title || props.channel.og_title || 'Unknown Channel'
 </template>
 
 <style scoped>
-.data {
+.channel-detail {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
+.detail-header {
+  display: flex;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
 .thumbnail {
-  text-align: center;
+  flex-shrink: 0;
 }
 
 .thumbnail img {
   width: 80px;
   height: 80px;
-  border-radius: 50%;
+  border-radius: 8px;
   object-fit: cover;
 }
 
-.info {
+.header-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.header-info h2 {
+  margin: 0;
+  font-size: 16px;
+  color: #030303;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.description {
+  margin: 0;
+  font-size: 12px;
+  color: #666;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.detail-content {
   display: flex;
   flex-direction: column;
   gap: 12px;
-}
-
-h2 {
-  margin: 0 0 12px 0;
-  font-size: 16px;
-  color: #030303;
 }
 
 .field {
@@ -101,30 +154,38 @@ h2 {
 
 .field label {
   font-weight: 600;
-  font-size: 12px;
+  font-size: 11px;
   color: #666;
   text-transform: uppercase;
 }
 
 .field code {
   background: #f5f5f5;
-  padding: 8px;
+  padding: 6px 8px;
   border-radius: 4px;
   font-family: 'Monaco', 'Courier New', monospace;
-  font-size: 12px;
+  font-size: 11px;
   word-break: break-all;
 }
 
 .field span {
-  font-size: 14px;
+  font-size: 13px;
   color: #030303;
 }
 
-.description {
-  margin: 0;
-  font-size: 13px;
-  color: #666;
-  line-height: 1.4;
+.url-link,
+.rss-link,
+.owner-link {
+  color: #065fd4;
+  text-decoration: none;
+  font-size: 12px;
+  word-break: break-all;
+}
+
+.url-link:hover,
+.rss-link:hover,
+.owner-link:hover {
+  text-decoration: underline;
 }
 
 .rss-url {
@@ -133,18 +194,16 @@ h2 {
   align-items: center;
 }
 
-.rss-url a {
+.rss-link {
   flex: 1;
-  color: #065fd4;
-  text-decoration: none;
-  font-size: 12px;
-  word-break: break-all;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  padding: 4px 8px;
+  background: #e8f0ff;
+  border-radius: 3px;
+  text-align: center;
 }
 
-.rss-url a:hover {
-  text-decoration: underline;
+.rss-link:hover {
+  background: #d0e0ff;
 }
 
 .copy-btn {
@@ -159,5 +218,16 @@ h2 {
 
 .copy-btn:hover {
   background: #e0e0e0;
+}
+
+.owner-urls {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.owner-link {
+  padding: 4px 0;
+  font-size: 12px;
 }
 </style>

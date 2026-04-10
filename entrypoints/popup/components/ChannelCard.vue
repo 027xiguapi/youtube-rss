@@ -2,23 +2,47 @@
 import { copyRSSUrl } from '../composables/useUtils'
 import type { ChannelData } from '../composables/types'
 
-defineProps<{
+const props = defineProps<{
   channel: ChannelData
 }>()
+
+const getThumbnailUrl = () => {
+  return props.channel.avatar?.thumbnails?.[0]?.url || ''
+}
+
+const getTitle = () => {
+  return props.channel.title || 'Unknown Channel'
+}
+
+const formatSubscribers = (count?: number) => {
+  if (!count) return ''
+  if (count >= 1000000) return `${(count / 1000000).toFixed(1)}M`
+  if (count >= 1000) return `${(count / 1000).toFixed(1)}K`
+  return count.toString()
+}
 </script>
 
 <template>
   <div class="channel-card">
-    <div v-if="channel.thumbnailUrl" class="card-thumbnail">
-      <img :src="channel.thumbnailUrl" :alt="channel.title" />
+    <div v-if="getThumbnailUrl()" class="card-thumbnail">
+      <img :src="getThumbnailUrl()" :alt="getTitle()" />
     </div>
 
     <div class="card-info">
-      <h3>{{ channel.title }}</h3>
+      <h3 :title="getTitle()">{{ getTitle() }}</h3>
 
-      <div class="card-rss">
-        <a v-if="channel.rssUrl" :href="channel.rssUrl" target="_blank" title="Open RSS feed">RSS</a>
-        <button v-if="channel.rssUrl" @click="copyRSSUrl(channel.rssUrl)" class="copy-btn" title="Copy RSS URL">Copy</button>
+      <div class="card-meta">
+        <span v-if="channel.subscriberCount" class="meta-item">
+          {{ formatSubscribers(channel.subscriberCount) }} subscribers
+        </span>
+        <span v-if="channel.videoCount" class="meta-item">
+          {{ channel.videoCount }} videos
+        </span>
+      </div>
+
+      <div v-if="channel.rssUrl" class="card-rss">
+        <a :href="channel.rssUrl" target="_blank" title="Open RSS feed">RSS</a>
+        <button @click="copyRSSUrl(channel.rssUrl)" class="copy-btn" title="Copy RSS URL">Copy</button>
       </div>
     </div>
   </div>
@@ -46,7 +70,7 @@ defineProps<{
 .card-thumbnail img {
   width: 60px;
   height: 60px;
-  border-radius: 50%;
+  border-radius: 8px;
   object-fit: cover;
 }
 
@@ -61,23 +85,22 @@ defineProps<{
 .card-info h3 {
   margin: 0;
   font-size: 13px;
+  font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   color: #030303;
 }
 
-.card-url {
-  color: #065fd4;
-  text-decoration: none;
-  font-size: 11px;
-  word-break: break-all;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.card-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
-.card-url:hover {
-  text-decoration: underline;
+.meta-item {
+  font-size: 11px;
+  color: #666;
 }
 
 .card-rss {

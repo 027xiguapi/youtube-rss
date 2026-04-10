@@ -1,7 +1,9 @@
 export interface ChannelData {
   id?: string
   // 频道ID
-  channelId?: string
+  externalId?: string
+  // 频道链接
+  channelUrl?: string
   // 频道名称
   title?: string
   // 订阅者数量
@@ -14,8 +16,10 @@ export interface ChannelData {
   description?: string
   // 频道内容
   content?: string
-  // 频道缩略图URL
-  thumbnailUrl?: string
+  // 频道缩略图
+  avatar?: avatarData
+  // 拥有频道链接
+  ownerUrls?: string[]
   // 频道rss链接
   rssUrl?: string
   // 频道地区
@@ -28,4 +32,13 @@ export interface ChannelData {
   createdAt?: string
   // 数据修改时间
   updatedAt?: string
+}
+
+// 频道缩略图数据结构
+export interface avatarData {
+  thumbnails?: {
+    url: string
+    width: number
+    height: number
+  }[]
 }
