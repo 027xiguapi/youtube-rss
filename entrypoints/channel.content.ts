@@ -37,7 +37,7 @@ export default defineContentScript({
                 ytInitialData.header?.c4TabbedHeaderRenderer || ytInitialData.header?.pageHeaderRenderer
 
               if (header?.channelId) {
-                channelData.channel_id = header.channelId
+                channelData.channelId = header.channelId
               }
 
               if (header?.title?.simpleText) {
@@ -53,7 +53,7 @@ export default defineContentScript({
                   if (unit === 'K') count *= 1000
                   else if (unit === 'M') count *= 1000000
                   else if (unit === 'B') count *= 1000000000
-                  channelData.subscriber_count = Math.floor(count)
+                  channelData.subscriberCount = Math.floor(count)
                 }
               }
 
@@ -64,7 +64,7 @@ export default defineContentScript({
               // Extract thumbnail
               const thumbnail = header?.avatar?.thumbnails?.[header.avatar.thumbnails.length - 1]
               if (thumbnail?.url) {
-                channelData.thumbnail_url = thumbnail.url
+                channelData.thumbnailUrl = thumbnail.url
               }
 
               // Extract video count from tabs
@@ -76,7 +76,7 @@ export default defineContentScript({
                   for (const content of contents) {
                     const itemSectionRenderer = content.itemSectionRenderer
                     if (itemSectionRenderer?.contents?.[0]?.gridRenderer?.items) {
-                      channelData.video_count = itemSectionRenderer.contents[0].gridRenderer.items.length
+                      channelData.videoCount = itemSectionRenderer.contents[0].gridRenderer.items.length
                     }
                   }
                 }
@@ -89,7 +89,7 @@ export default defineContentScript({
           // Extract RSS URL from page HTML
           const rssLink = document.querySelector('link[rel="alternate"][type="application/rss+xml"]') as any
           if (rssLink) {
-            channelData.rss_url = rssLink.href
+            channelData.rssUrl = rssLink.href
           }
 
           // Extract image and title from meta tags

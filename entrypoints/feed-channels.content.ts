@@ -97,10 +97,9 @@ export default defineContentScript({
                   '';
   
                 channels.push({
-                  name: channelName,
-                  url: e.href,
-                  rss: rssMatch?.[1] || '',
-                  image,
+                  title: channelName,
+                  rssUrl: rssMatch?.[1] || '',
+                  thumbnailUrl: image,
                 });
               } catch (err) {
                 console.error(err);

@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import ActionBar from './ActionBar.vue'
 import ChannelCard from './ChannelCard.vue'
-import type { FeedChannel } from '../composables/types'
+import type { ChannelData } from '../composables/types'
 
 defineProps<{
-  channels: FeedChannel[]
+  channels: ChannelData[]
 }>()
 
 const emit = defineEmits<{

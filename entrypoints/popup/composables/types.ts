@@ -1,21 +1,31 @@
 export interface ChannelData {
-  urlHandle?: string
-  channel_id?: string
+  id?: string
+  // 频道ID
+  channelId?: string
+  // 频道名称
   title?: string
-  subscriber_count?: number
+  // 订阅者数量
+  subscriberCount?: number
+  // 视频数量
+  videoCount?: number
+  // 频道分类
+  categories?: string
+  // 频道描述
   description?: string
-  thumbnail_url?: string
-  video_count?: number
-  rss_url?: string
-  channel_created_at?: string
-  image?: string
-  og_image?: string
-  og_title?: string
-}
-
-export interface FeedChannel {
-  name: string
-  url: string
-  rss: string
-  image: string
+  // 频道内容
+  content?: string
+  // 频道缩略图URL
+  thumbnailUrl?: string
+  // 频道rss链接
+  rssUrl?: string
+  // 频道地区
+  region?: string
+  // 频道创建时间
+  channelCreatedAt?: string
+  // 频道是否启用YouTube合作伙伴计划
+  hasYPP?: boolean
+  // 数据创建时间
+  createdAt?: string
+  // 数据修改时间
+  updatedAt?: string
 }

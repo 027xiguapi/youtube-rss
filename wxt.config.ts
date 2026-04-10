@@ -8,7 +8,7 @@ export default defineConfig({
     sizes: [16, 32, 48, 128],
   },
   manifest: {
-    permissions: ['tabs', 'scripting'],
+    permissions: ['tabs', 'scripting', 'storage'],
     host_permissions: [
       'https://www.youtube.com/@*',
       'https://www.youtube.com/c/*',

@@ -1,26 +1,24 @@
 <script lang="ts" setup>
 import { copyRSSUrl } from '../composables/useUtils'
-import type { FeedChannel } from '../composables/types'
+import type { ChannelData } from '../composables/types'
 
 defineProps<{
-  channel: FeedChannel
+  channel: ChannelData
 }>()
 </script>
 
 <template>
   <div class="channel-card">
-    <div v-if="channel.image" class="card-thumbnail">
-      <img :src="channel.image" :alt="channel.name" />
+    <div v-if="channel.thumbnailUrl" class="card-thumbnail">
+      <img :src="channel.thumbnailUrl" :alt="channel.title" />
     </div>
 
     <div class="card-info">
-      <h3>{{ channel.name }}</h3>
-
-      <a class="card-url" :href="channel.url" target="_blank" :title="channel.url">{{ channel.url }}</a>
+      <h3>{{ channel.title }}</h3>
 
       <div class="card-rss">
-        <a :href="channel.rss" target="_blank" title="Open RSS feed">RSS</a>
-        <button @click="copyRSSUrl(channel.rss)" class="copy-btn" title="Copy RSS URL">Copy</button>
+        <a v-if="channel.rssUrl" :href="channel.rssUrl" target="_blank" title="Open RSS feed">RSS</a>
+        <button v-if="channel.rssUrl" @click="copyRSSUrl(channel.rssUrl)" class="copy-btn" title="Copy RSS URL">Copy</button>
       </div>
     </div>
   </div>

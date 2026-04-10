@@ -1,12 +1,10 @@
-import type { ChannelData, FeedChannel } from './types'
+import type { ChannelData } from './types'
 
-type AnyData = ChannelData | FeedChannel
-
-export function copyToClipboard(data: AnyData | AnyData[]) {
+export function copyToClipboard(data: ChannelData | ChannelData[]) {
   navigator.clipboard.writeText(JSON.stringify(data, null, 2))
 }
 
-export function downloadJSON(data: AnyData | AnyData[], filename: string) {
+export function downloadJSON(data: ChannelData | ChannelData[], filename: string) {
   const json = JSON.stringify(data, null, 2)
   const blob = new Blob([json], { type: 'application/json' })
   const url = URL.createObjectURL(blob)
