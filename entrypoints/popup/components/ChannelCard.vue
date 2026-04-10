@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { copyRSSUrl } from '../composables/useUtils'
+import { copyUrl } from '../composables/useUtils'
 import type { ChannelData } from '../composables/types'
 
 const props = defineProps<{
@@ -13,13 +13,6 @@ const getThumbnailUrl = () => {
 const getTitle = () => {
   return props.channel.title || 'Unknown Channel'
 }
-
-const formatSubscribers = (count?: number) => {
-  if (!count) return ''
-  if (count >= 1000000) return `${(count / 1000000).toFixed(1)}M`
-  if (count >= 1000) return `${(count / 1000).toFixed(1)}K`
-  return count.toString()
-}
 </script>
 
 <template>
@@ -29,20 +22,19 @@ const formatSubscribers = (count?: number) => {
     </div>
 
     <div class="card-info">
-      <h3 :title="getTitle()">{{ getTitle() }}</h3>
+      <h3 :title="getTitle()" class="meta-title">{{ getTitle() }}</h3>
 
       <div class="card-meta">
-        <span v-if="channel.subscriberCount" class="meta-item">
-          {{ formatSubscribers(channel.subscriberCount) }} subscribers
-        </span>
-        <span v-if="channel.videoCount" class="meta-item">
-          {{ channel.videoCount }} videos
-        </span>
-      </div>
-
-      <div v-if="channel.rssUrl" class="card-rss">
-        <a :href="channel.rssUrl" target="_blank" title="Open RSS feed">RSS</a>
-        <button @click="copyRSSUrl(channel.rssUrl)" class="copy-btn" title="Copy RSS URL">Copy</button>
+        <div v-if="channel.ownerUrls && channel.ownerUrls.length > 0" class="meta-item">
+          <div v-for="(url, idx) in channel.ownerUrls" :key="idx" class="owner-item">
+            <a :href="url" target="_blank" class="owner-link">{{ url }}</a>
+            <button @click="copyUrl(url)" class="copy-btn" title="Copy URL">Copy</button>
+          </div>
+        </div>
+        <div v-if="channel.rssUrl" class="rss-item">
+          <a :href="channel.rssUrl" target="_blank" class="rss-link">{{ channel.rssUrl }}</a>
+          <button @click="copyUrl(channel.rssUrl)" class="copy-btn" title="Copy RSS URL">Copy</button>
+        </div>
       </div>
     </div>
   </div>
@@ -90,37 +82,42 @@ const formatSubscribers = (count?: number) => {
   text-overflow: ellipsis;
   white-space: nowrap;
   color: #030303;
+  text-align: left;
 }
 
 .card-meta {
   display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
 }
 
 .meta-item {
   font-size: 11px;
   color: #666;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
-.card-rss {
+.rss-item {
   display: flex;
   gap: 6px;
   align-items: center;
+  font-size: 11px;
 }
 
-.card-rss a {
+.owner-link,
+.rss-link {
   color: #065fd4;
   text-decoration: none;
   font-size: 11px;
-  font-weight: 600;
-  padding: 2px 6px;
-  background: #e8f0ff;
-  border-radius: 3px;
+  word-break: break-all;
 }
 
-.card-rss a:hover {
-  background: #d0e0ff;
+.owner-link:hover,
+.rss-link:hover {
+  text-decoration: underline;
 }
 
 .copy-btn {
@@ -130,6 +127,7 @@ const formatSubscribers = (count?: number) => {
   border-radius: 3px;
   cursor: pointer;
   font-size: 10px;
+  white-space: nowrap;
 }
 
 .copy-btn:hover {

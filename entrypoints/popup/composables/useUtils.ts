@@ -15,6 +15,6 @@ export function downloadJSON(data: ChannelData | ChannelData[], filename: string
   URL.revokeObjectURL(url)
 }
 
-export function copyRSSUrl(rssUrl: string) {
-  navigator.clipboard.writeText(rssUrl)
+export function copyUrl(url: string) {
+  navigator.clipboard.writeText(url)
 }

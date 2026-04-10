@@ -1,36 +1,22 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 import { storage } from '@wxt-dev/storage'
-import ChannelDetail from './components/ChannelDetail.vue'
 import ChannelsList from './components/ChannelsList.vue'
 import { copyToClipboard, downloadJSON } from './composables/useUtils'
 import type { ChannelData } from './composables/types'
 
 const loading = ref(false)
-const channelData = ref<ChannelData | null>(null)
 const channelsData = ref<ChannelData[]>([])
 const error = ref('')
 const isFeedPage = ref(false)
 
-const CACHE_KEYS = {
-  channelData: 'local:channelData',
-  channelsData: 'local:channelsData',
-  installDate: 'local:installDate',
-}
+const CACHE_KEY = 'local:channelsData'
 
-const loadCachedData = async (isFeed: boolean) => {
+const loadCachedData = async () => {
   try {
-    const keys = isFeed
-      ? [CACHE_KEYS.channelsData, CACHE_KEYS.installDate]
-      : [CACHE_KEYS.channelData, CACHE_KEYS.installDate]
-
-    const cached = await storage.getItems(keys)
-
-    if (isFeed && cached[CACHE_KEYS.channelsData]) {
-      channelsData.value = cached[CACHE_KEYS.channelsData]
-      return true
-    } else if (!isFeed && cached[CACHE_KEYS.channelData]) {
-      channelData.value = cached[CACHE_KEYS.channelData]
+    const cached = await storage.getItem(CACHE_KEY) as ChannelData[] | null
+    if (cached) {
+      channelsData.value = cached
       return true
     }
   } catch (e) {
@@ -39,20 +25,9 @@ const loadCachedData = async (isFeed: boolean) => {
   return false
 }
 
-const saveCachedData = async (isFeed: boolean) => {
+const saveCachedData = async () => {
   try {
-    const now = new Date().toISOString()
-    const items: Record<string, any> = {
-      [CACHE_KEYS.installDate]: now,
-    }
-
-    if (isFeed) {
-      items[CACHE_KEYS.channelsData] = channelsData.value
-    } else {
-      items[CACHE_KEYS.channelData] = channelData.value
-    }
-
-    await storage.setItems(items)
+    await storage.setItem(CACHE_KEY, channelsData.value)
   } catch (e) {
     console.error('Error saving cached data:', e)
   }
@@ -69,11 +44,13 @@ const extractData = async () => {
     const isFeed = tab.url?.includes('youtube.com/feed/channels') || false
     isFeedPage.value = isFeed || false
 
-    // Try to load from cache first
-    const hasCached = await loadCachedData(isFeed)
-    if (hasCached) {
-      loading.value = false
-      return
+    // Try to load from cache first (only for feed page)
+    if (isFeed) {
+      const hasCached = await loadCachedData()
+      if (hasCached) {
+        loading.value = false
+        return
+      }
     }
 
     // If no cache, fetch fresh data
@@ -85,12 +62,14 @@ const extractData = async () => {
       if (channelsData.value.length === 0) {
         error.value = 'No channels found on this page'
       } else {
-        await saveCachedData(isFeed)
+        await saveCachedData()
       }
     } else {
       const response = await browser.tabs.sendMessage(tab.id, { action: 'extractChannelData' })
-      channelData.value = response
-      await saveCachedData(isFeed)
+      if (response) {
+        channelsData.value = [response]
+      }
+      console.log('Extracted channel data from content script:', response, channelsData.value)
     }
   } catch (e) {
     error.value = e instanceof Error ? e.message : 'Failed to extract data'
@@ -100,8 +79,6 @@ const extractData = async () => {
   }
 }
 
-const handleCopySingle = () => copyToClipboard(channelData.value!)
-const handleDownloadSingle = () => downloadJSON(channelData.value!, `channel_${channelData.value!.channelId}.json`)
 const handleCopyAll = () => copyToClipboard(channelsData.value)
 const handleDownloadAll = () => downloadJSON(channelsData.value, 'channels.json')
 
@@ -157,12 +134,7 @@ const fetchRSSData = async () => {
 
 const clearCache = async () => {
   try {
-    await storage.removeItems([
-      CACHE_KEYS.channelData,
-      CACHE_KEYS.channelsData,
-      CACHE_KEYS.installDate,
-    ])
-    channelData.value = null
+    await storage.removeItem(CACHE_KEY)
     channelsData.value = []
     error.value = ''
     await extractData()
@@ -171,8 +143,22 @@ const clearCache = async () => {
   }
 }
 
-onMounted(() => {
-  // extractData()
+onMounted(async () => {
+  try {
+    const [tab] = await browser.tabs.query({ active: true, currentWindow: true })
+    if (!tab.id) return
+
+    const response = await browser.tabs.sendMessage(tab.id, { action: 'getChannelId' })
+    if (response?.externalId) {
+      const cachedChannels = (await storage.getItem(CACHE_KEY)) as ChannelData[] | null
+      if (cachedChannels) {
+        const found = cachedChannels.filter((ch) => ch.externalId === response.externalId)
+        channelsData.value = found
+      }
+    }
+  } catch (e) {
+    console.error('Error in onMounted:', e)
+  }
 })
 </script>
 
@@ -181,7 +167,7 @@ onMounted(() => {
     <h1>YouTube RSS Extractor</h1>
 
     <div v-if="loading" class="status">
-      <p>Extracting {{ isFeedPage ? 'channels' : 'channel' }} data...</p>
+      <p>Extracting channels data...</p>
     </div>
 
     <div v-else-if="error" class="status error">
@@ -189,29 +175,21 @@ onMounted(() => {
       <button @click="extractData">Retry</button>
     </div>
 
-    <ChannelDetail
-      v-else-if="channelData && !isFeedPage"
-      :channel="channelData"
-      @refresh="extractData"
-      @copy="handleCopySingle"
-      @download="handleDownloadSingle"
-    />
-
     <ChannelsList
-      v-else-if="channelsData.length > 0 && isFeedPage"
+      v-else-if="channelsData.length > 0"
       :channels="channelsData"
       @refresh="extractData"
       @copy="handleCopyAll"
       @download="handleDownloadAll"
     />
 
-    <div v-if="channelsData.length > 0 && isFeedPage" class="button-group">
+    <div v-if="channelsData.length > 0" class="button-group">
       <button @click="fetchRSSData" class="btn-primary">Fetch RSS Data</button>
       <button @click="downloadOPML" class="btn-primary">Download OPML</button>
     </div>
 
     <div v-else class="status">
-      <p>No {{ isFeedPage ? 'channels' : 'channel' }} data extracted yet</p>
+      <p>No channels data extracted yet</p>
       <button @click="extractData">Extract Data</button>
     </div>
   </div>

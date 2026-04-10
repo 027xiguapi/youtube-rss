@@ -18,18 +18,18 @@ const emit = defineEmits<{
   <div class="channels-list">
     <div class="channels-header">
       <h2>{{ channels.length }} Channels Found</h2>
-      <ActionBar
-        copy-label="Copy All JSON"
-        download-label="Download All"
-        @copy="emit('copy')"
-        @download="emit('download')"
-        @refresh="emit('refresh')"
-      />
     </div>
 
     <div class="channels-grid">
-      <ChannelCard v-for="channel in channels" :key="channel.url" :channel="channel" />
+      <ChannelCard v-for="channel in channels" :key="channel.externalId" :channel="channel" />
     </div>
+    <ActionBar
+      copy-label="Copy All JSON"
+      download-label="Download All"
+      @copy="emit('copy')"
+      @download="emit('download')"
+      @refresh="emit('refresh')"
+    />
   </div>
 </template>
 
