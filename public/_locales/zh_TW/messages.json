@@ -1,0 +1,166 @@
+{
+  "extName": {
+    "message": "YouTube RSS 擷取工具",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "從 YouTube 頻道擷取 RSS 訂閱來源",
+    "description": "Extension description"
+  },
+  "appName": {
+    "message": "YouTube RSS 擷取工具",
+    "description": "Application name"
+  },
+  "appDescription": {
+    "message": "從 YouTube 頻道擷取 RSS 訂閱來源",
+    "description": "Application description"
+  },
+  "extractingChannels": {
+    "message": "正在擷取頻道資料…",
+    "description": "Loading message when extracting channel data"
+  },
+  "extractingSubscriptions": {
+    "message": "正在載入訂閱清單…",
+    "description": "Loading message when extracting subscriptions"
+  },
+  "fetchingChannels": {
+    "message": "擷取中…（$COUNT$/$MAX$）",
+    "description": "Progress message while fetching channels",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      },
+      "max": {
+        "content": "$2",
+        "example": "10"
+      }
+    }
+  },
+  "noChannelsFound": {
+    "message": "此頁面未找到任何頻道",
+    "description": "Error message when no channels are found"
+  },
+  "noChannelsData": {
+    "message": "尚未擷取任何頻道資料",
+    "description": "Message when no channel data has been extracted"
+  },
+  "extractData": {
+    "message": "擷取資料",
+    "description": "Button label to extract data"
+  },
+  "retry": {
+    "message": "重試",
+    "description": "Button label to retry failed operation"
+  },
+  "fetchRSSData": {
+    "message": "取得 RSS 資料",
+    "description": "Button label to fetch fresh RSS data"
+  },
+  "downloadOPML": {
+    "message": "下載 OPML",
+    "description": "Button label to download OPML file"
+  },
+  "copyAll": {
+    "message": "複製全部 JSON",
+    "description": "Button label to copy all data as JSON"
+  },
+  "downloadAll": {
+    "message": "下載全部",
+    "description": "Button label to download all data"
+  },
+  "refresh": {
+    "message": "重新整理",
+    "description": "Button label to refresh data"
+  },
+  "copy": {
+    "message": "複製",
+    "description": "Button label to copy"
+  },
+  "copyRSS": {
+    "message": "複製 RSS",
+    "description": "Button label to copy RSS URL"
+  },
+  "openRSSFeed": {
+    "message": "開啟 RSS 來源",
+    "description": "Tooltip for RSS feed link"
+  },
+  "copyRSSURL": {
+    "message": "複製 RSS 網址",
+    "description": "Tooltip for copy RSS button"
+  },
+  "copyURL": {
+    "message": "複製網址",
+    "description": "Tooltip for copy URL button"
+  },
+  "channelID": {
+    "message": "頻道 ID",
+    "description": "Label for channel ID field"
+  },
+  "channelURL": {
+    "message": "頻道網址",
+    "description": "Label for channel URL field"
+  },
+  "subscribers": {
+    "message": "訂閱人數",
+    "description": "Label for subscriber count"
+  },
+  "videos": {
+    "message": "影片數量",
+    "description": "Label for video count"
+  },
+  "region": {
+    "message": "地區",
+    "description": "Label for region field"
+  },
+  "rssURL": {
+    "message": "RSS 網址",
+    "description": "Label for RSS URL field"
+  },
+  "ownerURLs": {
+    "message": "擁有者網址",
+    "description": "Label for owner URLs field"
+  },
+  "description": {
+    "message": "描述",
+    "description": "Label for description field"
+  },
+  "channelsFound": {
+    "message": "找到 $COUNT$ 個頻道",
+    "description": "Header showing number of channels found",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "failedToLoadCache": {
+    "message": "載入快取資料失敗",
+    "description": "Error message when cache loading fails"
+  },
+  "failedToSaveData": {
+    "message": "儲存資料失敗",
+    "description": "Error message when data saving fails"
+  },
+  "failedToClearCache": {
+    "message": "清除快取失敗",
+    "description": "Error message when cache clearing fails"
+  },
+  "failedToExtractData": {
+    "message": "擷取資料失敗",
+    "description": "Error message when data extraction fails"
+  },
+  "noChannelsDataToExport": {
+    "message": "無頻道資料可匯出",
+    "description": "Error message when trying to export with no data"
+  },
+  "youtubeSubscriptionsRSS": {
+    "message": "YouTube 訂閱清單 RSS",
+    "description": "Title for OPML export"
+  },
+  "youtubeSubscriptions": {
+    "message": "YouTube 訂閱清單",
+    "description": "Outline text for OPML export"
+  }
+}

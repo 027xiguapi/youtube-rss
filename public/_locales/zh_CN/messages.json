@@ -1,0 +1,166 @@
+{
+  "extName": {
+    "message": "YouTube RSS 提取器",
+    "description": "扩展名称"
+  },
+  "extDescription": {
+    "message": "从 YouTube 频道提取 RSS 源",
+    "description": "扩展描述"
+  },
+  "appName": {
+    "message": "YouTube RSS 提取器",
+    "description": "应用名称"
+  },
+  "appDescription": {
+    "message": "从 YouTube 频道提取 RSS 源",
+    "description": "应用描述"
+  },
+  "extractingChannels": {
+    "message": "正在提取频道数据...",
+    "description": "提取频道数据时的加载消息"
+  },
+  "extractingSubscriptions": {
+    "message": "正在加载订阅...",
+    "description": "提取订阅时的加载消息"
+  },
+  "fetchingChannels": {
+    "message": "正在获取... ($COUNT$/$MAX$)",
+    "description": "获取频道时的进度消息",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      },
+      "max": {
+        "content": "$2",
+        "example": "10"
+      }
+    }
+  },
+  "noChannelsFound": {
+    "message": "此页面上未找到频道",
+    "description": "未找到频道时的错误消息"
+  },
+  "noChannelsData": {
+    "message": "尚未提取频道数据",
+    "description": "未提取频道数据时的消息"
+  },
+  "extractData": {
+    "message": "提取数据",
+    "description": "提取数据按钮标签"
+  },
+  "retry": {
+    "message": "重试",
+    "description": "重试失败操作的按钮标签"
+  },
+  "fetchRSSData": {
+    "message": "获取 RSS 数据",
+    "description": "获取新鲜 RSS 数据的按钮标签"
+  },
+  "downloadOPML": {
+    "message": "下载 OPML",
+    "description": "下载 OPML 文件的按钮标签"
+  },
+  "copyAll": {
+    "message": "复制所有 JSON",
+    "description": "复制所有数据为 JSON 的按钮标签"
+  },
+  "downloadAll": {
+    "message": "下载全部",
+    "description": "下载所有数据的按钮标签"
+  },
+  "refresh": {
+    "message": "刷新",
+    "description": "刷新数据的按钮标签"
+  },
+  "copy": {
+    "message": "复制",
+    "description": "复制按钮标签"
+  },
+  "copyRSS": {
+    "message": "复制 RSS",
+    "description": "复制 RSS URL 的按钮标签"
+  },
+  "openRSSFeed": {
+    "message": "打开 RSS 源",
+    "description": "RSS 源链接的工具提示"
+  },
+  "copyRSSURL": {
+    "message": "复制 RSS URL",
+    "description": "复制 RSS 按钮的工具提示"
+  },
+  "copyURL": {
+    "message": "复制 URL",
+    "description": "复制 URL 按钮的工具提示"
+  },
+  "channelID": {
+    "message": "频道 ID",
+    "description": "频道 ID 字段的标签"
+  },
+  "channelURL": {
+    "message": "频道 URL",
+    "description": "频道 URL 字段的标签"
+  },
+  "subscribers": {
+    "message": "订阅者",
+    "description": "订阅者数量的标签"
+  },
+  "videos": {
+    "message": "视频",
+    "description": "视频数量的标签"
+  },
+  "region": {
+    "message": "地区",
+    "description": "地区字段的标签"
+  },
+  "rssURL": {
+    "message": "RSS URL",
+    "description": "RSS URL 字段的标签"
+  },
+  "ownerURLs": {
+    "message": "所有者 URL",
+    "description": "所有者 URL 字段的标签"
+  },
+  "description": {
+    "message": "描述",
+    "description": "描述字段的标签"
+  },
+  "channelsFound": {
+    "message": "找到 $COUNT$ 个频道",
+    "description": "显示找到的频道数量的标题",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "failedToLoadCache": {
+    "message": "加载缓存数据失败",
+    "description": "缓存加载失败时的错误消息"
+  },
+  "failedToSaveData": {
+    "message": "保存数据失败",
+    "description": "数据保存失败时的错误消息"
+  },
+  "failedToClearCache": {
+    "message": "清除缓存失败",
+    "description": "缓存清除失败时的错误消息"
+  },
+  "failedToExtractData": {
+    "message": "提取数据失败",
+    "description": "数据提取失败时的错误消息"
+  },
+  "noChannelsDataToExport": {
+    "message": "没有频道数据可导出",
+    "description": "尝试导出但没有数据时的错误消息"
+  },
+  "youtubeSubscriptionsRSS": {
+    "message": "YouTube 订阅 RSS",
+    "description": "OPML 导出的标题"
+  },
+  "youtubeSubscriptions": {
+    "message": "YouTube 订阅",
+    "description": "OPML 导出的大纲文本"
+  }
+}

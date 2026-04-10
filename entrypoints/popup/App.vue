@@ -3,8 +3,10 @@ import { ref, onMounted } from 'vue'
 import ChannelsList from './components/ChannelsList.vue'
 import { copyToClipboard, downloadJSON } from './composables/useUtils'
 import { useChannelStore } from './stores/channelStore'
+import { useI18n } from './composables/useI18n'
 
 const store = useChannelStore()
+const { t } = useI18n()
 const isFeedPage = ref(false)
 const { channelsData, loading, error } = store
 
@@ -25,7 +27,7 @@ const extractData = async () => {
       await extractChannelData(tab)
     }
   } catch (e) {
-    store.setError(e instanceof Error ? e.message : 'Failed to extract data')
+    store.setError(e instanceof Error ? e.message : t('failedToExtractData'))
     console.error('Error:', e)
   } finally {
     store.setLoading(false)
@@ -38,7 +40,7 @@ const extractChannelsRss = async (tab: any) => {
     store.setChannelsData(response.channels || [])
   }
   if (channelsData.length === 0) {
-    store.setError('No channels found on this page')
+    store.setError(t('noChannelsFound'))
   } else {
     await store.saveCachedData()
   }
@@ -65,18 +67,18 @@ const escapeXML = (str: string) => {
 
 const downloadOPML = () => {
   if (channelsData.length === 0) {
-    store.setError('No channels data to export')
+    store.setError(t('noChannelsDataToExport'))
     return
   }
 
   const opmlText = `<?xml version="1.0" encoding="UTF-8"?>
 <opml version="2.0">
 \t<head>
-\t\t<title>YouTube Subscriptions as RSS</title>
+\t\t<title>${t('youtubeSubscriptionsRSS')}</title>
 \t\t<dateCreated>${new Date().toISOString()}</dateCreated>
 \t</head>
 \t<body>
-\t\t<outline text="YouTube Subscriptions">${channelsData
+\t\t<outline text="${t('youtubeSubscriptions')}">${channelsData
           .filter((channel) => channel.rssUrl)
           .map(
             (channel) =>
@@ -126,15 +128,15 @@ onMounted(async () => {
 
 <template>
   <div class="container">
-    <h1>YouTube RSS Extractor({{ channelsData.length || 0 }})</h1>
+    <h1>{{ t('appName') }}({{ channelsData.length || 0 }})</h1>
 
     <div v-if="store.loading.value" class="status">
-      <p>Extracting channels data...</p>
+      <p>{{ t('extractingChannels') }}</p>
     </div>
 
     <div v-else-if="store.error.value" class="status error">
       <p>{{ store.error.value }}</p>
-      <button @click="extractData">Retry</button>
+      <button @click="extractData">{{ t('retry') }}</button>
     </div>
 
     <ChannelsList
@@ -146,13 +148,13 @@ onMounted(async () => {
     />
 
     <div v-if="channelsData.length > 0" class="button-group">
-      <button @click="fetchRSSData" class="btn-primary">Fetch RSS Data</button>
-      <button @click="downloadOPML" class="btn-primary">Download OPML</button>
+      <button @click="fetchRSSData" class="btn-primary">{{ t('fetchRSSData') }}</button>
+      <button @click="downloadOPML" class="btn-primary">{{ t('downloadOPML') }}</button>
     </div>
 
     <div v-else class="status">
-      <p>No channels data extracted yet</p>
-      <button @click="extractData">Extract Data</button>
+      <p>{{ t('noChannelsData') }}</p>
+      <button @click="extractData">{{ t('extractData') }}</button>
     </div>
   </div>
 </template>

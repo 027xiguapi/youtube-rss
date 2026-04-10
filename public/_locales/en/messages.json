@@ -1,0 +1,166 @@
+{
+  "extName": {
+    "message": "YouTube RSS Extractor",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "Extract RSS feeds from YouTube channels",
+    "description": "Extension description"
+  },
+  "appName": {
+    "message": "YouTube RSS Extractor",
+    "description": "Application name"
+  },
+  "appDescription": {
+    "message": "Extract RSS feeds from YouTube channels",
+    "description": "Application description"
+  },
+  "extractingChannels": {
+    "message": "Extracting channels data...",
+    "description": "Loading message when extracting channel data"
+  },
+  "extractingSubscriptions": {
+    "message": "Loading subscriptions...",
+    "description": "Loading message when extracting subscriptions"
+  },
+  "fetchingChannels": {
+    "message": "Fetching... ($COUNT$/$MAX$)",
+    "description": "Progress message while fetching channels",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      },
+      "max": {
+        "content": "$2",
+        "example": "10"
+      }
+    }
+  },
+  "noChannelsFound": {
+    "message": "No channels found on this page",
+    "description": "Error message when no channels are found"
+  },
+  "noChannelsData": {
+    "message": "No channels data extracted yet",
+    "description": "Message when no channel data has been extracted"
+  },
+  "extractData": {
+    "message": "Extract Data",
+    "description": "Button label to extract data"
+  },
+  "retry": {
+    "message": "Retry",
+    "description": "Button label to retry failed operation"
+  },
+  "fetchRSSData": {
+    "message": "Fetch RSS Data",
+    "description": "Button label to fetch fresh RSS data"
+  },
+  "downloadOPML": {
+    "message": "Download OPML",
+    "description": "Button label to download OPML file"
+  },
+  "copyAll": {
+    "message": "Copy All JSON",
+    "description": "Button label to copy all data as JSON"
+  },
+  "downloadAll": {
+    "message": "Download All",
+    "description": "Button label to download all data"
+  },
+  "refresh": {
+    "message": "Refresh",
+    "description": "Button label to refresh data"
+  },
+  "copy": {
+    "message": "Copy",
+    "description": "Button label to copy"
+  },
+  "copyRSS": {
+    "message": "Copy RSS",
+    "description": "Button label to copy RSS URL"
+  },
+  "openRSSFeed": {
+    "message": "Open RSS feed",
+    "description": "Tooltip for RSS feed link"
+  },
+  "copyRSSURL": {
+    "message": "Copy RSS URL",
+    "description": "Tooltip for copy RSS button"
+  },
+  "copyURL": {
+    "message": "Copy URL",
+    "description": "Tooltip for copy URL button"
+  },
+  "channelID": {
+    "message": "Channel ID",
+    "description": "Label for channel ID field"
+  },
+  "channelURL": {
+    "message": "Channel URL",
+    "description": "Label for channel URL field"
+  },
+  "subscribers": {
+    "message": "Subscribers",
+    "description": "Label for subscriber count"
+  },
+  "videos": {
+    "message": "Videos",
+    "description": "Label for video count"
+  },
+  "region": {
+    "message": "Region",
+    "description": "Label for region field"
+  },
+  "rssURL": {
+    "message": "RSS URL",
+    "description": "Label for RSS URL field"
+  },
+  "ownerURLs": {
+    "message": "Owner URLs",
+    "description": "Label for owner URLs field"
+  },
+  "description": {
+    "message": "Description",
+    "description": "Label for description field"
+  },
+  "channelsFound": {
+    "message": "$COUNT$ Channels Found",
+    "description": "Header showing number of channels found",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "failedToLoadCache": {
+    "message": "Failed to load cached data",
+    "description": "Error message when cache loading fails"
+  },
+  "failedToSaveData": {
+    "message": "Failed to save data",
+    "description": "Error message when data saving fails"
+  },
+  "failedToClearCache": {
+    "message": "Failed to clear cache",
+    "description": "Error message when cache clearing fails"
+  },
+  "failedToExtractData": {
+    "message": "Failed to extract data",
+    "description": "Error message when data extraction fails"
+  },
+  "noChannelsDataToExport": {
+    "message": "No channels data to export",
+    "description": "Error message when trying to export with no data"
+  },
+  "youtubeSubscriptionsRSS": {
+    "message": "YouTube Subscriptions as RSS",
+    "description": "Title for OPML export"
+  },
+  "youtubeSubscriptions": {
+    "message": "YouTube Subscriptions",
+    "description": "Outline text for OPML export"
+  }
+}
