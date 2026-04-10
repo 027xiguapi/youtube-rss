@@ -1,0 +1,166 @@
+{
+  "extName": {
+    "message": "YouTube RSS エクストラクター",
+    "description": "拡張機能の名前"
+  },
+  "extDescription": {
+    "message": "YouTube チャンネルから RSS フィードを抽出します",
+    "description": "拡張機能の説明"
+  },
+  "appName": {
+    "message": "YouTube RSS エクストラクター",
+    "description": "アプリケーション名"
+  },
+  "appDescription": {
+    "message": "YouTube チャンネルから RSS フィードを抽出します",
+    "description": "アプリケーション説明"
+  },
+  "extractingChannels": {
+    "message": "チャンネルデータを抽出中...",
+    "description": "チャンネルデータ抽出時のロードメッセージ"
+  },
+  "extractingSubscriptions": {
+    "message": "購読を読み込み中...",
+    "description": "購読抽出時のロードメッセージ"
+  },
+  "fetchingChannels": {
+    "message": "取得中... ($COUNT$/$MAX$)",
+    "description": "チャンネル取得時の進捗メッセージ",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      },
+      "max": {
+        "content": "$2",
+        "example": "10"
+      }
+    }
+  },
+  "noChannelsFound": {
+    "message": "このページにはチャンネルが見つかりません",
+    "description": "チャンネルが見つからない場合のエラーメッセージ"
+  },
+  "noChannelsData": {
+    "message": "まだチャンネルデータが抽出されていません",
+    "description": "チャンネルデータが抽出されていない場合のメッセージ"
+  },
+  "extractData": {
+    "message": "データを抽出",
+    "description": "データ抽出ボタンのラベル"
+  },
+  "retry": {
+    "message": "再試行",
+    "description": "失敗した操作を再試行するボタンのラベル"
+  },
+  "fetchRSSData": {
+    "message": "RSS データを取得",
+    "description": "新しい RSS データを取得するボタンのラベル"
+  },
+  "downloadOPML": {
+    "message": "OPML をダウンロード",
+    "description": "OPML ファイルをダウンロードするボタンのラベル"
+  },
+  "copyAll": {
+    "message": "すべて JSON にコピー",
+    "description": "すべてのデータを JSON としてコピーするボタンのラベル"
+  },
+  "downloadAll": {
+    "message": "すべてダウンロード",
+    "description": "すべてのデータをダウンロードするボタンのラベル"
+  },
+  "refresh": {
+    "message": "更新",
+    "description": "データを更新するボタンのラベル"
+  },
+  "copy": {
+    "message": "コピー",
+    "description": "コピーボタンのラベル"
+  },
+  "copyRSS": {
+    "message": "RSS をコピー",
+    "description": "RSS URL をコピーするボタンのラベル"
+  },
+  "openRSSFeed": {
+    "message": "RSS フィードを開く",
+    "description": "RSS フィードリンクのツールチップ"
+  },
+  "copyRSSURL": {
+    "message": "RSS URL をコピー",
+    "description": "RSS コピーボタンのツールチップ"
+  },
+  "copyURL": {
+    "message": "URL をコピー",
+    "description": "URL コピーボタンのツールチップ"
+  },
+  "channelID": {
+    "message": "チャンネル ID",
+    "description": "チャンネル ID フィールドのラベル"
+  },
+  "channelURL": {
+    "message": "チャンネル URL",
+    "description": "チャンネル URL フィールドのラベル"
+  },
+  "subscribers": {
+    "message": "購読者",
+    "description": "購読者数のラベル"
+  },
+  "videos": {
+    "message": "動画",
+    "description": "動画数のラベル"
+  },
+  "region": {
+    "message": "地域",
+    "description": "地域フィールドのラベル"
+  },
+  "rssURL": {
+    "message": "RSS URL",
+    "description": "RSS URL フィールドのラベル"
+  },
+  "ownerURLs": {
+    "message": "所有者 URL",
+    "description": "所有者 URL フィールドのラベル"
+  },
+  "description": {
+    "message": "説明",
+    "description": "説明フィールドのラベル"
+  },
+  "channelsFound": {
+    "message": "$COUNT$ 個のチャンネルが見つかりました",
+    "description": "見つかったチャンネル数を表示するヘッダー",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "failedToLoadCache": {
+    "message": "キャッシュデータの読み込みに失敗しました",
+    "description": "キャッシュ読み込み失敗時のエラーメッセージ"
+  },
+  "failedToSaveData": {
+    "message": "データの保存に失敗しました",
+    "description": "データ保存失敗時のエラーメッセージ"
+  },
+  "failedToClearCache": {
+    "message": "キャッシュのクリアに失敗しました",
+    "description": "キャッシュクリア失敗時のエラーメッセージ"
+  },
+  "failedToExtractData": {
+    "message": "データの抽出に失敗しました",
+    "description": "データ抽出失敗時のエラーメッセージ"
+  },
+  "noChannelsDataToExport": {
+    "message": "エクスポートするチャンネルデータがありません",
+    "description": "データなしでエクスポートしようとした場合のエラーメッセージ"
+  },
+  "youtubeSubscriptionsRSS": {
+    "message": "YouTube 購読を RSS として",
+    "description": "OPML エクスポートのタイトル"
+  },
+  "youtubeSubscriptions": {
+    "message": "YouTube 購読",
+    "description": "OPML エクスポートのアウトラインテキスト"
+  }
+}

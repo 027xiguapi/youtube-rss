@@ -1,0 +1,166 @@
+{
+  "extName": {
+    "message": "Extractor de RSS de YouTube",
+    "description": "Nombre de la extensión"
+  },
+  "extDescription": {
+    "message": "Extrae fuentes RSS de canales de YouTube",
+    "description": "Descripción de la extensión"
+  },
+  "appName": {
+    "message": "Extractor de RSS de YouTube",
+    "description": "Nombre de la aplicación"
+  },
+  "appDescription": {
+    "message": "Extrae fuentes RSS de canales de YouTube",
+    "description": "Descripción de la aplicación"
+  },
+  "extractingChannels": {
+    "message": "Extrayendo datos de canales...",
+    "description": "Mensaje de carga al extraer datos de canales"
+  },
+  "extractingSubscriptions": {
+    "message": "Cargando suscripciones...",
+    "description": "Mensaje de carga al extraer suscripciones"
+  },
+  "fetchingChannels": {
+    "message": "Obteniendo... ($COUNT$/$MAX$)",
+    "description": "Mensaje de progreso al obtener canales",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      },
+      "max": {
+        "content": "$2",
+        "example": "10"
+      }
+    }
+  },
+  "noChannelsFound": {
+    "message": "No se encontraron canales en esta página",
+    "description": "Mensaje de error cuando no se encuentran canales"
+  },
+  "noChannelsData": {
+    "message": "Aún no se han extraído datos de canales",
+    "description": "Mensaje cuando no se han extraído datos de canales"
+  },
+  "extractData": {
+    "message": "Extraer datos",
+    "description": "Etiqueta del botón para extraer datos"
+  },
+  "retry": {
+    "message": "Reintentar",
+    "description": "Etiqueta del botón para reintentar operación fallida"
+  },
+  "fetchRSSData": {
+    "message": "Obtener datos RSS",
+    "description": "Etiqueta del botón para obtener datos RSS frescos"
+  },
+  "downloadOPML": {
+    "message": "Descargar OPML",
+    "description": "Etiqueta del botón para descargar archivo OPML"
+  },
+  "copyAll": {
+    "message": "Copiar todo JSON",
+    "description": "Etiqueta del botón para copiar todos los datos como JSON"
+  },
+  "downloadAll": {
+    "message": "Descargar todo",
+    "description": "Etiqueta del botón para descargar todos los datos"
+  },
+  "refresh": {
+    "message": "Actualizar",
+    "description": "Etiqueta del botón para actualizar datos"
+  },
+  "copy": {
+    "message": "Copiar",
+    "description": "Etiqueta del botón copiar"
+  },
+  "copyRSS": {
+    "message": "Copiar RSS",
+    "description": "Etiqueta del botón para copiar URL RSS"
+  },
+  "openRSSFeed": {
+    "message": "Abrir fuente RSS",
+    "description": "Información sobre herramienta para enlace de fuente RSS"
+  },
+  "copyRSSURL": {
+    "message": "Copiar URL RSS",
+    "description": "Información sobre herramienta para botón copiar RSS"
+  },
+  "copyURL": {
+    "message": "Copiar URL",
+    "description": "Información sobre herramienta para botón copiar URL"
+  },
+  "channelID": {
+    "message": "ID del canal",
+    "description": "Etiqueta para campo ID del canal"
+  },
+  "channelURL": {
+    "message": "URL del canal",
+    "description": "Etiqueta para campo URL del canal"
+  },
+  "subscribers": {
+    "message": "Suscriptores",
+    "description": "Etiqueta para cantidad de suscriptores"
+  },
+  "videos": {
+    "message": "Vídeos",
+    "description": "Etiqueta para cantidad de vídeos"
+  },
+  "region": {
+    "message": "Región",
+    "description": "Etiqueta para campo región"
+  },
+  "rssURL": {
+    "message": "URL RSS",
+    "description": "Etiqueta para campo URL RSS"
+  },
+  "ownerURLs": {
+    "message": "URLs del propietario",
+    "description": "Etiqueta para campo URLs del propietario"
+  },
+  "description": {
+    "message": "Descripción",
+    "description": "Etiqueta para campo descripción"
+  },
+  "channelsFound": {
+    "message": "Se encontraron $COUNT$ canales",
+    "description": "Encabezado mostrando cantidad de canales encontrados",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "10"
+      }
+    }
+  },
+  "failedToLoadCache": {
+    "message": "Error al cargar datos en caché",
+    "description": "Mensaje de error cuando falla la carga de caché"
+  },
+  "failedToSaveData": {
+    "message": "Error al guardar datos",
+    "description": "Mensaje de error cuando falla el guardado de datos"
+  },
+  "failedToClearCache": {
+    "message": "Error al limpiar caché",
+    "description": "Mensaje de error cuando falla la limpieza de caché"
+  },
+  "failedToExtractData": {
+    "message": "Error al extraer datos",
+    "description": "Mensaje de error cuando falla la extracción de datos"
+  },
+  "noChannelsDataToExport": {
+    "message": "No hay datos de canales para exportar",
+    "description": "Mensaje de error al intentar exportar sin datos"
+  },
+  "youtubeSubscriptionsRSS": {
+    "message": "Suscripciones de YouTube como RSS",
+    "description": "Título para exportación OPML"
+  },
+  "youtubeSubscriptions": {
+    "message": "Suscripciones de YouTube",
+    "description": "Texto de esquema para exportación OPML"
+  }
+}

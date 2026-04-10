@@ -7,6 +7,9 @@ export default defineConfig({
     baseIconPath: 'public/icon.svg',
     sizes: [16, 32, 48, 128],
   },
+  i18n: {
+    localesDir: './locales',
+  },
   manifest: {
     name: '__MSG_extName__',
     description: '__MSG_extDescription__',
@@ -20,3 +23,4 @@ export default defineConfig({
     ],
   },
 });
+
