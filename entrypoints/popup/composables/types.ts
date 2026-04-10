@@ -34,6 +34,31 @@ export interface ChannelData {
   updatedAt?: string
 }
 
+// {
+//     "externalId": "UCjY_1EGLMHeijGkV1khlPDg",
+//     "channelUrl": "https://www.youtube.com/channel/UCjY_1EGLMHeijGkV1khlPDg",
+//     "title": "metrolinehub",
+//     "categories": "",
+//     "description": "Explore Global Subway Maps\nExplore subway line maps from around the world, including major urban subway systems in Asia, Europe, America, Africa, and Oceania.\n",
+//     "content": "Explore Global Subway Maps\nExplore subway line maps from around the world, including major urban subway systems in Asia, Europe, America, Africa, and Oceania.\n",
+//     "avatar": {
+//         "thumbnails": [
+//             {
+//                 "url": "https://yt3.googleusercontent.com/CFuZXh12pXPUMK6bBKKB6e3FPWixAvjqfPku4LjO8dPiUTwcSZmWiRpD6Jlm0s-AwLknyriHRQ=s900-c-k-c0x00ffffff-no-rj",
+//                 "width": 900,
+//                 "height": 900
+//             }
+//         ]
+//     },
+//     "ownerUrls": [
+//         "http://www.youtube.com/@metrolinehub"
+//     ],
+//     "rssUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCjY_1EGLMHeijGkV1khlPDg",
+//     "hasYPP": true,
+//     "createdAt": "2026-04-10T06:55:50.698Z",
+//     "updatedAt": "2026-04-10T06:55:50.698Z"
+// }
+
 // 频道缩略图数据结构
 export interface avatarData {
   thumbnails?: {

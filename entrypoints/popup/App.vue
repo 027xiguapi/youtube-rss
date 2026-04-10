@@ -1,86 +1,58 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
-import { storage } from '@wxt-dev/storage'
 import ChannelsList from './components/ChannelsList.vue'
 import { copyToClipboard, downloadJSON } from './composables/useUtils'
-import type { ChannelData } from './composables/types'
+import { useChannelStore } from './stores/channelStore'
 
-const loading = ref(false)
-const channelsData = ref<ChannelData[]>([])
-const error = ref('')
+const store = useChannelStore()
 const isFeedPage = ref(false)
-
-const CACHE_KEY = 'local:channelsData'
-
-const loadCachedData = async () => {
-  try {
-    const cached = await storage.getItem(CACHE_KEY) as ChannelData[] | null
-    if (cached) {
-      channelsData.value = cached
-      return true
-    }
-  } catch (e) {
-    console.error('Error loading cached data:', e)
-  }
-  return false
-}
-
-const saveCachedData = async () => {
-  try {
-    await storage.setItem(CACHE_KEY, channelsData.value)
-  } catch (e) {
-    console.error('Error saving cached data:', e)
-  }
-}
+const { channelsData, loading, error } = store
 
 const extractData = async () => {
-  loading.value = true
-  error.value = ''
+  store.setLoading(true)
+  store.clearError()
 
   try {
     const [tab] = await browser.tabs.query({ active: true, currentWindow: true })
     if (!tab.id) throw new Error('No active tab found')
 
     const isFeed = tab.url?.includes('youtube.com/feed/channels') || false
-    isFeedPage.value = isFeed || false
+    isFeedPage.value = isFeed
 
-    // Try to load from cache first (only for feed page)
     if (isFeed) {
-      const hasCached = await loadCachedData()
-      if (hasCached) {
-        loading.value = false
-        return
-      }
-    }
-
-    // If no cache, fetch fresh data
-    if (isFeed) {
-      const response = await browser.tabs.sendMessage(tab.id, { action: 'extractChannelsRss' })
-      if (response && response.channels) {
-        channelsData.value = response.channels || []
-      }
-      if (channelsData.value.length === 0) {
-        error.value = 'No channels found on this page'
-      } else {
-        await saveCachedData()
-      }
+      await extractChannelsRss(tab)
     } else {
-      const response = await browser.tabs.sendMessage(tab.id, { action: 'extractChannelData' })
-      if (response) {
-        channelsData.value = [response]
-      }
-      console.log('Extracted channel data from content script:', response, channelsData.value)
+      await extractChannelData(tab)
     }
   } catch (e) {
-    error.value = e instanceof Error ? e.message : 'Failed to extract data'
+    store.setError(e instanceof Error ? e.message : 'Failed to extract data')
     console.error('Error:', e)
   } finally {
-    loading.value = false
+    store.setLoading(false)
   }
 }
 
-const handleCopyAll = () => copyToClipboard(channelsData.value)
-const handleDownloadAll = () => downloadJSON(channelsData.value, 'channels.json')
+const extractChannelsRss = async (tab: any) => {
+  const response = await browser.tabs.sendMessage(tab.id, { action: 'extractChannelsRss' })
+  if (response && response.channels) {
+    store.setChannelsData(response.channels || [])
+  }
+  if (channelsData.length === 0) {
+    store.setError('No channels found on this page')
+  } else {
+    await store.saveCachedData()
+  }
+}
+
+const extractChannelData = async (tab: any) => {
+  const response = await browser.tabs.sendMessage(tab.id, { action: 'extractChannelData' })
+  if (response) {
+    store.setChannelsData([response])
+  }
+}
+
+const handleCopyAll = () => copyToClipboard(channelsData)
+const handleDownloadAll = () => downloadJSON(channelsData, 'channels.json')
 
 const escapeXML = (str: string) => {
   return str
@@ -92,8 +64,8 @@ const escapeXML = (str: string) => {
 }
 
 const downloadOPML = () => {
-  if (channelsData.value.length === 0) {
-    error.value = 'No channels data to export'
+  if (channelsData.length === 0) {
+    store.setError('No channels data to export')
     return
   }
 
@@ -104,7 +76,7 @@ const downloadOPML = () => {
 \t\t<dateCreated>${new Date().toISOString()}</dateCreated>
 \t</head>
 \t<body>
-\t\t<outline text="YouTube Subscriptions">${channelsData.value
+\t\t<outline text="YouTube Subscriptions">${channelsData
           .filter((channel) => channel.rssUrl)
           .map(
             (channel) =>
@@ -129,18 +101,8 @@ const downloadOPML = () => {
 }
 
 const fetchRSSData = async () => {
-  await clearCache()
-}
-
-const clearCache = async () => {
-  try {
-    await storage.removeItem(CACHE_KEY)
-    channelsData.value = []
-    error.value = ''
-    await extractData()
-  } catch (e) {
-    console.error('Error clearing cache:', e)
-  }
+  await store.clearCache()
+  await extractData()
 }
 
 onMounted(async () => {
@@ -148,13 +110,13 @@ onMounted(async () => {
     const [tab] = await browser.tabs.query({ active: true, currentWindow: true })
     if (!tab.id) return
 
-    const response = await browser.tabs.sendMessage(tab.id, { action: 'getChannelId' })
-    if (response?.externalId) {
-      const cachedChannels = (await storage.getItem(CACHE_KEY)) as ChannelData[] | null
-      if (cachedChannels) {
-        const found = cachedChannels.filter((ch) => ch.externalId === response.externalId)
-        channelsData.value = found
-      }
+    const isFeed = tab.url?.includes('youtube.com/feed/channels') || false
+    isFeedPage.value = isFeed
+
+    if (isFeed) {
+      await store.loadCachedData()
+    } else {
+      await extractChannelData(tab)
     }
   } catch (e) {
     console.error('Error in onMounted:', e)
@@ -164,14 +126,14 @@ onMounted(async () => {
 
 <template>
   <div class="container">
-    <h1>YouTube RSS Extractor</h1>
+    <h1>YouTube RSS Extractor({{ channelsData.length || 0 }})</h1>
 
-    <div v-if="loading" class="status">
+    <div v-if="store.loading.value" class="status">
       <p>Extracting channels data...</p>
     </div>
 
-    <div v-else-if="error" class="status error">
-      <p>{{ error }}</p>
+    <div v-else-if="store.error.value" class="status error">
+      <p>{{ store.error.value }}</p>
       <button @click="extractData">Retry</button>
     </div>
 
