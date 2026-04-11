@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { onMounted } from 'vue'
 import ChannelsList from './components/ChannelsList.vue'
 import { copyToClipboard, downloadJSON } from './composables/useUtils'
 import { useChannelStore } from './stores/channelStore'
@@ -7,7 +7,6 @@ import { useI18n } from './composables/useI18n'
 
 const store = useChannelStore()
 const { t } = useI18n()
-const isFeedPage = ref(false)
 const { channelsData, loading, error } = store
 
 const extractData = async () => {
@@ -19,18 +18,32 @@ const extractData = async () => {
     if (!tab.id) throw new Error('No active tab found')
 
     const isFeed = tab.url?.includes('youtube.com/feed/channels') || false
-    isFeedPage.value = isFeed
+    const youtubeChannelRegex = /^https?:\/\/(www\.)?youtube\.com\/(@|c\/|channel\/)[a-zA-Z0-9_-]+$/i
 
     if (isFeed) {
       await extractChannelsRss(tab)
-    } else {
+    } else if (tab.url && youtubeChannelRegex.test(tab.url)) {
       await extractChannelData(tab)
+    } else {
+      await getChannelsRss(tab)
     }
   } catch (e) {
     store.setError(e instanceof Error ? e.message : t('failedToExtractData'))
     console.error('Error:', e)
   } finally {
     store.setLoading(false)
+  }
+}
+
+const getChannelsRss = async (tab: any) => {
+  const response = await browser.tabs.sendMessage(tab.id, { action: 'getChannelsRss' })
+  if (response && response.channels) {
+    store.setChannelsData(response.channels || [])
+  }
+  if (channelsData.length === 0) {
+    store.setError(t('noChannelsFound'))
+  } else {
+    await store.saveCachedData()
   }
 }
 
@@ -113,7 +126,6 @@ onMounted(async () => {
     if (!tab.id) return
 
     const isFeed = tab.url?.includes('youtube.com/feed/channels') || false
-    isFeedPage.value = isFeed
 
     if (isFeed) {
       await store.loadCachedData()
@@ -130,12 +142,12 @@ onMounted(async () => {
   <div class="container">
     <h1>{{ t('appName') }}({{ channelsData.length || 0 }})</h1>
 
-    <div v-if="store.loading.value" class="status">
+    <div v-if="loading" class="status">
       <p>{{ t('extractingChannels') }}</p>
     </div>
 
-    <div v-else-if="store.error.value" class="status error">
-      <p>{{ store.error.value }}</p>
+    <div v-else-if="error" class="status error">
+      <p>{{ error }}</p>
       <button @click="extractData">{{ t('retry') }}</button>
     </div>
 

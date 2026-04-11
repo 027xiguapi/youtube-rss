@@ -22,15 +22,10 @@ const getTitle = () => {
     </div>
 
     <div class="card-info">
-      <h3 :title="getTitle()" class="meta-title">{{ getTitle() }}</h3>
-
+      <a  v-if="channel.ownerUrls && channel.ownerUrls.length > 0" :href="channel.ownerUrls[0]" target="_blank" class="owner-link">
+        <h3 :title="getTitle()" class="meta-title">{{ getTitle() }}</h3>
+      </a>
       <div class="card-meta">
-        <div v-if="channel.ownerUrls && channel.ownerUrls.length > 0" class="meta-item">
-          <div v-for="(url, idx) in channel.ownerUrls" :key="idx" class="owner-item">
-            <a :href="url" target="_blank" class="owner-link">{{ url }}</a>
-            <button @click="copyUrl(url)" class="copy-btn" title="Copy URL">Copy</button>
-          </div>
-        </div>
         <div v-if="channel.rssUrl" class="rss-item">
           <a :href="channel.rssUrl" target="_blank" class="rss-link">{{ channel.rssUrl }}</a>
           <button @click="copyUrl(channel.rssUrl)" class="copy-btn" title="Copy RSS URL">Copy</button>
@@ -70,19 +65,20 @@ const getTitle = () => {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 0px;
   min-width: 0;
 }
 
 .card-info h3 {
   margin: 0;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   color: #030303;
   text-align: left;
+  cursor: pointer;
 }
 
 .card-meta {

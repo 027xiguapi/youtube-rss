@@ -16,20 +16,9 @@ const emit = defineEmits<{
 
 <template>
   <div class="channels-list">
-    <div class="channels-header">
-      <h2>{{ channels.length }} Channels Found</h2>
-    </div>
-
     <div class="channels-grid">
       <ChannelCard v-for="channel in channels" :key="channel.externalId" :channel="channel" />
     </div>
-    <ActionBar
-      copy-label="Copy All JSON"
-      download-label="Download All"
-      @copy="emit('copy')"
-      @download="emit('download')"
-      @refresh="emit('refresh')"
-    />
   </div>
 </template>
 
@@ -56,7 +45,6 @@ const emit = defineEmits<{
   display: grid;
   grid-template-columns: 1fr;
   gap: 12px;
-  max-height: 600px;
   overflow-y: auto;
 }
 </style>
