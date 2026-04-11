@@ -44,7 +44,6 @@ const emit = defineEmits<{
 .channels-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 12px;
   overflow-y: auto;
 }
 </style>

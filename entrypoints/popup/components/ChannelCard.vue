@@ -40,9 +40,6 @@ const getTitle = () => {
   display: flex;
   gap: 12px;
   padding: 12px;
-  background: #f9f9f9;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
   transition: background 0.2s;
 }
 
