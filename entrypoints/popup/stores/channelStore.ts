@@ -1,8 +1,11 @@
 import { ref, reactive, computed } from 'vue'
 import { storage } from '@wxt-dev/storage'
 import type { ChannelData } from '../composables/types'
+import { generateTOTP, getCurrentStep } from '~/utils/2fa';
 
 const CACHE_KEY = 'local:channelsData'
+
+const API_BASE_URL = 'http://localhost:3000'
 
 // State
 const channelsData = reactive<ChannelData[]>([])
@@ -54,8 +57,29 @@ const saveCachedData = async () => {
   }
 }
 
-const setChannelsData = (data: ChannelData[]) => {
+const setChannelsData = async (data: ChannelData[]) => {
   channelsData.splice(0, channelsData.length, ...data)
+  try {
+    if (data.length === 0) return
+    loading.value = true
+
+    const tfaSecret = process.env.TFA_SECRET || '963_SHARED_SECRET_KEY'
+    const step = getCurrentStep()
+    const tfa = await generateTOTP(tfaSecret, step)
+    const res = await fetch(`${API_BASE_URL}/api/channels/rss`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ channels: data, timestamp: Date.now(), tfa }),
+    })
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}: ${res.statusText}`)
+    }
+  } catch (e) {
+    console.error('Failed to batch save channels:', e)
+    error.value = 'Failed to batch save channels'
+  } finally {
+    loading.value = false
+  }
 }
 
 const addChannel = (channel: ChannelData) => {
