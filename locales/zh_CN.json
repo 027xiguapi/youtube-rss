@@ -162,5 +162,33 @@
   "youtubeSubscriptions": {
     "message": "YouTube 订阅",
     "description": "OPML 导出的大纲文本"
+  },
+  "channels": {
+    "message": "频道",
+    "description": "频道选项卡标签"
+  },
+  "tools": {
+    "message": "工具",
+    "description": "工具选项卡标签"
+  },
+  "settings": {
+    "message": "设置",
+    "description": "设置选项卡标签"
+  },
+  "exportCookies": {
+    "message": "导出 YouTube Cookies",
+    "description": "导出 cookies 的工具部分标题"
+  },
+  "downloadCookies": {
+    "message": "下载 Cookies",
+    "description": "下载 cookies 的按钮标签"
+  },
+  "channelLinks": {
+    "message": "频道链接",
+    "description": "频道链接的工具部分标题"
+  },
+  "download": {
+    "message": "下载",
+    "description": "下载按钮标签"
   }
 }

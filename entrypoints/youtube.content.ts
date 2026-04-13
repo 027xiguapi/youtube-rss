@@ -81,6 +81,45 @@ export default defineContentScript({
       observer.observe(document.body, { childList: true, subtree: true })
 
       browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+        if (message.action === 'exportCookies') {
+          try {
+            const cookies = document.cookie.split('; ')
+            const lines = [
+              '# Netscape HTTP Cookie File',
+              '# https://curl.haxx.se/rfc/cookie_spec.html',
+              '# This is a generated file! Do not edit.',
+              ''
+            ]
+
+            const domain = '.youtube.com'
+            const includeSubdomains = 'TRUE'
+            const path = '/'
+            const expiration = '1810609496'
+
+            cookies.forEach(cookie => {
+              const [name, ...valueParts] = cookie.split('=')
+              const value = valueParts.join('=')
+              const isSecure = 'TRUE'
+              lines.push(`${domain}\t${includeSubdomains}\t${path}\t${isSecure}\t${expiration}\t${name}\t${value}`)
+            })
+
+            const content = lines.join('\n')
+            const blob = new Blob([content], { type: 'text/plain' })
+            const url = URL.createObjectURL(blob)
+            const a = document.createElement('a')
+            a.href = url
+            a.download = `www.youtube.com_cookies_${new Date().getTime()}.txt`
+            document.body.appendChild(a)
+            a.click()
+            document.body.removeChild(a)
+            URL.revokeObjectURL(url)
+            sendResponse({ success: true })
+          } catch (err) {
+            sendResponse({ success: false, error: String(err) })
+          }
+          return true
+        }
+
         if (message.action === 'getChannelsRss') {
            
           (async () => {

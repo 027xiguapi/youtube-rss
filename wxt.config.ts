@@ -14,7 +14,7 @@ export default defineConfig({
     name: '__MSG_extName__',
     description: '__MSG_extDescription__',
     default_locale: 'en',
-    permissions: ['tabs', 'scripting', 'storage'],
+    permissions: ['tabs', 'scripting', 'storage', 'cookies'],
     host_permissions: [
       'https://www.youtube.com/@*',
       'https://www.youtube.com/c/*',

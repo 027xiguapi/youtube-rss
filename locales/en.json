@@ -162,5 +162,33 @@
   "youtubeSubscriptions": {
     "message": "YouTube Subscriptions",
     "description": "Outline text for OPML export"
+  },
+  "channels": {
+    "message": "Channels",
+    "description": "Tab label for channels"
+  },
+  "tools": {
+    "message": "Tools",
+    "description": "Tab label for tools"
+  },
+  "settings": {
+    "message": "Settings",
+    "description": "Tab label for settings"
+  },
+  "exportCookies": {
+    "message": "Export YouTube Cookies",
+    "description": "Tool section title for exporting cookies"
+  },
+  "downloadCookies": {
+    "message": "Download Cookies",
+    "description": "Button label to download cookies"
+  },
+  "channelLinks": {
+    "message": "Channel Links",
+    "description": "Tool section title for channel links"
+  },
+  "download": {
+    "message": "Download",
+    "description": "Button label to download"
   }
 }
