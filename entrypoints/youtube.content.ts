@@ -159,14 +159,13 @@ export default defineContentScript({
   
               progress.max = uniqueHrefList.length
               progress.value = 0
-  
               const channels: any[] = []
               try { 
-                const [data, uniqueHrefs] = await sendMessage('BATCH_SEARCH_CHANNELS', uniqueHrefList);
+                const { data } = await sendMessage('BATCH_SEARCH_CHANNELS', uniqueHrefList);
 
-                channels.push(...data)
+                channels.push(...data.channels)
                 // Extract channel data
-                for (const href of uniqueHrefs) {
+                for (const href of data.uniqueHrefs) {
                   label.innerText = `Fetching... (${progress.value}/${progress.max})`
     
                   try {

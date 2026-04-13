@@ -105,32 +105,6 @@ const clearError = () => {
   error.value = ''
 }
 
-const searchChannels = async (queries: string[]): Promise<ChannelData[]> => {
-  try {
-    if (!queries || queries.length === 0) {
-      return []
-    }
-    loading.value = true
-
-    const response = await browser.runtime.sendMessage({
-      type: 'BATCH_SEARCH_CHANNELS',
-      queries,
-    })
-
-    if (!response.success) {
-      throw new Error(response.error || 'Failed to search channels')
-    }
-
-    return response.data || []
-  } catch (e) {
-    console.error('Failed to search channels:', e)
-    error.value = 'Failed to search channels'
-    return []
-  } finally {
-    loading.value = false
-  }
-}
-
 export const useChannelStore = () => {
   return {
     // State
@@ -147,7 +121,6 @@ export const useChannelStore = () => {
     loadCachedData,
     saveCachedData,
     setChannelsData,
-    searchChannels,
     addChannel,
     updateChannel,
     clearCache,

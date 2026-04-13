@@ -2,7 +2,7 @@ import { generateTOTP, getCurrentStep } from '~/utils/2fa'
 import { onMessage } from '~/utils/messaging'
 import type { ChannelData } from '~/entrypoints/popup/composables/types'
 
-const API_BASE_URL = 'http://localhost:3000'
+const API_BASE_URL = 'http://localhost:7002'
 
 export default defineBackground(() => {
   console.log('YouTube RSS Extractor background script loaded')
