@@ -1,9 +1,9 @@
+import { sendMessage } from '~/utils/messaging'
+
 export default defineContentScript({
     matches: ['https://www.youtube.com/*'],
   
     main() {
-      console.log('66')
-
       // RSS icon SVG
       const RSS_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="6.18" cy="17.82" r="2.18"/><path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"/></svg>`
 
@@ -122,61 +122,56 @@ export default defineContentScript({
               progress.value = 0
   
               const channels: any[] = []
-  
-              // Extract channel data
-              for (const href of uniqueHrefList) {
-                label.innerText = `Fetching... (${progress.value}/${progress.max})`
-  
-                try {
-                  const res = await fetch(href)
-                  if (!res.ok) continue
-  
-                  const html = await res.text()
-  
-                  const rssMatch = html.match(
-                    /<link\srel="alternate"\stype="application\/rss\+xml"\stitle="RSS"\shref="(.+?)"/
-                  )
-                  const imageMatch = html.match(
-                    /<link\srel="image_src"\shref="(.+?)"/
-                  )
-                  const canonicalMatch = html.match(
-                    /<link\srel="canonical"\shref="https:\/\/www\.youtube\.com\/channel\/([^"]+)"/
-                  )
+              try { 
+                const [data, uniqueHrefs] = await sendMessage('BATCH_SEARCH_CHANNELS', uniqueHrefList);
 
-                  const ogTitleMatch = html.match(
-                    /<meta\sproperty="og:title"\scontent="([^"]+)"/
-                  );
-  
-                  const channelId = canonicalMatch?.[1] || ''
-                  const rssUrl = rssMatch?.[1] || ''
-                  const thumbnailUrl = imageMatch?.[1] || ''
-                  const ogTitle = ogTitleMatch ? ogTitleMatch[1] : '';
-  
-                  if (channelId && rssUrl) {
-                    channels.push({
-                      externalId: channelId,
-                      channelUrl: href,
-                      title: ogTitle,
-                      avatar: {
-                        thumbnails: thumbnailUrl ? [{ url: thumbnailUrl }] : [],
-                      },
-                      ownerUrls: [href],
-                      rssUrl: rssUrl,
-                      createdAt: new Date().toISOString(),
-                      updatedAt: new Date().toISOString(),
-                    })
+                channels.push(...data)
+                // Extract channel data
+                for (const href of uniqueHrefs) {
+                  label.innerText = `Fetching... (${progress.value}/${progress.max})`
+    
+                  try {
+                   const channel = await extractChannelData(href)
+                    if (channel?.externalId) {
+                      channels.push({
+                        ...channel,
+                      })
+                    }
+                  } catch (err) {
+                    console.error(err)
+                  } finally {
+                    progress.value++
                   }
-                } catch (err) {
-                  console.error(err)
-                } finally {
-                  progress.value++
                 }
+    
+                sendResponse({
+                  success: true,
+                  channels: channels,
+                })
+              } catch (err) { 
+                console.error(err)
+                for (const href of uniqueHrefList) {
+                  label.innerText = `Fetching... (${progress.value}/${progress.max})`
+    
+                  try {
+                    const channel = await extractChannelData(href)
+                    if (channel?.externalId) {
+                      channels.push({
+                        ...channel,
+                      })
+                    }
+                  } catch (err) {
+                    console.error(err)
+                  } finally {
+                    progress.value++
+                  }
+                }
+    
+                sendResponse({
+                  success: true,
+                  channels: channels,
+                })
               }
-  
-              sendResponse({
-                success: true,
-                channels: channels,
-              })
             } catch (err) {
               console.error(err)
               sendResponse({

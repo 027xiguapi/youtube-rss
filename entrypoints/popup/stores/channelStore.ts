@@ -1,11 +1,9 @@
 import { ref, reactive, computed } from 'vue'
 import { storage } from '@wxt-dev/storage'
+import { sendMessage } from '~/utils/messaging'
 import type { ChannelData } from '../composables/types'
-import { generateTOTP, getCurrentStep } from '~/utils/2fa';
 
 const CACHE_KEY = 'local:channelsData'
-
-const API_BASE_URL = 'http://localhost:3000'
 
 // State
 const channelsData = reactive<ChannelData[]>([])
@@ -50,30 +48,18 @@ const loadCachedData = async () => {
 const saveCachedData = async () => {
   try {
     await storage.setItem(CACHE_KEY, channelsData)
-    console.log('Saved cached data:', channelsData)
   } catch (e) {
     console.error('Error saving cached data:', e)
     error.value = 'Failed to save data'
   }
 }
 
-const setChannelsData = async (data: ChannelData[]) => {
+const setChannelsData = (data: ChannelData[]) => {
   channelsData.splice(0, channelsData.length, ...data)
   try {
     if (data.length === 0) return
     loading.value = true
-
-    const tfaSecret = process.env.TFA_SECRET || '963_SHARED_SECRET_KEY'
-    const step = getCurrentStep()
-    const tfa = await generateTOTP(tfaSecret, step)
-    const res = await fetch(`${API_BASE_URL}/api/channels/rss`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ channels: data, timestamp: Date.now(), tfa }),
-    })
-    if (!res.ok) {
-      throw new Error(`HTTP ${res.status}: ${res.statusText}`)
-    }
+    sendMessage('BATCH_SAVE_CHANNELS', [...data])
   } catch (e) {
     console.error('Failed to batch save channels:', e)
     error.value = 'Failed to batch save channels'
@@ -119,6 +105,32 @@ const clearError = () => {
   error.value = ''
 }
 
+const searchChannels = async (queries: string[]): Promise<ChannelData[]> => {
+  try {
+    if (!queries || queries.length === 0) {
+      return []
+    }
+    loading.value = true
+
+    const response = await browser.runtime.sendMessage({
+      type: 'BATCH_SEARCH_CHANNELS',
+      queries,
+    })
+
+    if (!response.success) {
+      throw new Error(response.error || 'Failed to search channels')
+    }
+
+    return response.data || []
+  } catch (e) {
+    console.error('Failed to search channels:', e)
+    error.value = 'Failed to search channels'
+    return []
+  } finally {
+    loading.value = false
+  }
+}
+
 export const useChannelStore = () => {
   return {
     // State
@@ -135,6 +147,7 @@ export const useChannelStore = () => {
     loadCachedData,
     saveCachedData,
     setChannelsData,
+    searchChannels,
     addChannel,
     updateChannel,
     clearCache,
