@@ -13,6 +13,8 @@ A browser extension to extract RSS feeds and channel metadata from YouTube chann
 - Copy JSON data to clipboard
 - Download channel data as JSON files
 - Quick copy RSS URLs
+- Export YouTube Cookies (Netscape format)
+- Quick open channel links
 
 ## Supported Pages
 
@@ -24,6 +26,14 @@ A browser extension to extract RSS feeds and channel metadata from YouTube chann
   - `https://www.youtube.com/feed/channels`
 
 ## Installation
+
+### Chrome Web Store
+
+[Install from Chrome Web Store](https://chromewebstore.google.com/detail/youtube-rss-extractor/cjljpiaogilmoaffnbfmaaagpmndjfmh)
+
+### GitHub
+
+[Project Repository](https://github.com/027xiguapi/youtube-rss)
 
 ### Development Mode
 
@@ -59,11 +69,12 @@ pnpm zip
 1. Visit any YouTube channel page
 2. Click the extension icon to open the popup
 3. The extension automatically extracts channel data
-4. Use the following options:
-   - **Copy JSON** - Copy channel data to clipboard
-   - **Download JSON** - Download data as a JSON file
-   - **Copy** (RSS URL) - Copy the RSS feed link
-   - **Refresh** - Re-extract data
+4. In the **Channels** tab, use the following options:
+   - **Fetch RSS Data** - Get fresh RSS data
+   - **Download OPML** - Download OPML file
+5. In the **Tools** tab:
+   - **Export YouTube Cookies** - Export YouTube Cookies (Netscape format)
+   - **Channel Links** - Quick open channel links
 
 ### Subscriptions Page (Bulk Mode)
 
@@ -108,21 +119,40 @@ pnpm zip
 ```
 ├── entrypoints/
 │   ├── background.ts              # Background service script
+│   ├── youtube.content.ts         # YouTube page content script
 │   ├── channel.content.ts         # Single channel content script
 │   ├── feed-channels.content.ts   # Subscriptions page bulk extraction script
 │   └── popup/
-│       ├── App.vue                # Popup main component
+│       ├── App.vue                # Popup main component (tab navigation)
 │       ├── components/
-│       │   ├── ActionBar.vue      # Action buttons bar
+│       │   ├── ChannelsTab.vue    # Channels tab
+│       │   ├── ToolsTab.vue       # Tools tab
+│       │   ├── SettingsTab.vue    # Settings tab
+│       │   ├── ChannelsList.vue   # Channels list
 │       │   ├── ChannelCard.vue    # Channel card
 │       │   ├── ChannelDetail.vue  # Single channel detail view
-│       │   └── ChannelsList.vue   # Channels list view
+│       │   └── ActionBar.vue      # Action buttons bar
 │       ├── composables/
 │       │   ├── types.ts           # Type definitions
-│       │   └── useUtils.ts        # Utility functions
-│       └── main.ts                # Popup entry point
+│       │   ├── useUtils.ts        # Utility functions
+│       │   └── useI18n.ts         # Internationalization
+│       ├── stores/
+│       │   └── channelStore.ts    # Channel data store
+│       ├── main.ts                # Popup entry point
+│       ├── App.vue                # Popup main component
+│       ├── index.html             # Popup HTML
+│       └── style.css              # Popup styles
+├── locales/                       # Internationalization language files
+│   ├── en.json                    # English
+│   ├── zh_CN.json                 # Simplified Chinese
+│   ├── zh_TW.json                 # Traditional Chinese
+│   ├── ja.json                    # Japanese
+│   ├── ko.json                    # Korean
+│   ├── es.json                    # Spanish
+│   └── fr.json                    # French
 ├── utils/
-│   └── youtubeExtractor.ts        # YouTube data extraction utility
+│   ├── 2fa.ts                     # 2FA utility functions
+│   └── messaging.ts               # Messaging utility
 ├── wxt.config.ts                  # WXT configuration
 └── package.json
 ```

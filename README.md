@@ -13,6 +13,8 @@
 - 复制 JSON 数据到剪贴板
 - 下载频道数据为 JSON 文件
 - 快速复制 RSS URL
+- 导出 YouTube Cookies（Netscape 格式）
+- 快速打开频道链接
 
 ## 支持的页面
 
@@ -24,6 +26,14 @@
   - `https://www.youtube.com/feed/channels`
 
 ## 安装
+
+### Chrome Web Store
+
+[在 Chrome Web Store 安装](https://chromewebstore.google.com/detail/youtube-rss-extractor/cjljpiaogilmoaffnbfmaaagpmndjfmh)
+
+### GitHub
+
+[项目地址](https://github.com/027xiguapi/youtube-rss)
 
 ### 开发模式
 
@@ -59,11 +69,12 @@ pnpm zip
 1. 访问任意 YouTube 频道页面
 2. 点击扩展图标打开弹窗
 3. 扩展会自动提取频道数据
-4. 使用以下选项：
-   - **Copy JSON** - 复制频道数据到剪贴板
-   - **Download JSON** - 下载数据为 JSON 文件
-   - **Copy** (RSS URL) - 复制 RSS 源链接
-   - **Refresh** - 重新提取数据
+4. 在 **Channels** 选项卡中使用以下选项：
+   - **Fetch RSS Data** - 获取新鲜 RSS 数据
+   - **Download OPML** - 下载 OPML 文件
+5. 在 **Tools** 选项卡中：
+   - **Export YouTube Cookies** - 导出 YouTube Cookies（Netscape 格式）
+   - **Channel Links** - 快速打开频道链接
 
 ### 订阅页面（批量模式）
 
@@ -108,21 +119,40 @@ pnpm zip
 ```
 ├── entrypoints/
 │   ├── background.ts              # 后台服务脚本
+│   ├── youtube.content.ts         # YouTube 页面内容脚本
 │   ├── channel.content.ts         # 单频道内容脚本
 │   ├── feed-channels.content.ts   # 订阅页面批量提取脚本
 │   └── popup/
-│       ├── App.vue                # 弹窗主组件
+│       ├── App.vue                # 弹窗主组件（标签页导航）
 │       ├── components/
-│       │   ├── ActionBar.vue      # 操作按钮栏
+│       │   ├── ChannelsTab.vue    # 频道选项卡
+│       │   ├── ToolsTab.vue       # 工具选项卡
+│       │   ├── SettingsTab.vue    # 设置选项卡
+│       │   ├── ChannelsList.vue   # 频道列表
 │       │   ├── ChannelCard.vue    # 频道卡片
 │       │   ├── ChannelDetail.vue  # 单频道详情
-│       │   └── ChannelsList.vue   # 频道列表
+│       │   └── ActionBar.vue      # 操作按钮栏
 │       ├── composables/
 │       │   ├── types.ts           # 类型定义
-│       │   └── useUtils.ts        # 工具函数
-│       └── main.ts                # 弹窗入口
+│       │   ├── useUtils.ts        # 工具函数
+│       │   └── useI18n.ts         # 国际化
+│       ├── stores/
+│       │   └── channelStore.ts    # 频道数据存储
+│       ├── main.ts                # 弹窗入口
+│       ├── App.vue                # 弹窗主组件
+│       ├── index.html             # 弹窗 HTML
+│       └── style.css              # 弹窗样式
+├── locales/                       # 国际化语言文件
+│   ├── en.json                    # 英文
+│   ├── zh_CN.json                 # 简体中文
+│   ├── zh_TW.json                 # 繁体中文
+│   ├── ja.json                    # 日文
+│   ├── ko.json                    # 韩文
+│   ├── es.json                    # 西班牙文
+│   └── fr.json                    # 法文
 ├── utils/
-│   └── youtubeExtractor.ts        # YouTube 数据提取工具
+│   ├── 2fa.ts                     # 2FA 工具函数
+│   └── messaging.ts               # 消息传递工具
 ├── wxt.config.ts                  # WXT 配置
 └── package.json
 ```
