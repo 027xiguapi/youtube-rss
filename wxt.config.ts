@@ -14,12 +14,13 @@ export default defineConfig({
     name: '__MSG_extName__',
     description: '__MSG_extDescription__',
     default_locale: 'en',
-    permissions: ['tabs', 'scripting', 'storage', 'cookies'],
+    permissions: ['tabs', 'scripting', 'storage', 'cookies', 'https://aitubestats.com/*'],
     host_permissions: [
       'https://www.youtube.com/@*',
       'https://www.youtube.com/c/*',
       'https://www.youtube.com/channel/*',
       'https://www.youtube.com/feed/channels*',
+      'https://aitubestats.com/*',
     ],
   },
 });

@@ -2,7 +2,9 @@ import { generateTOTP, getCurrentStep } from '~/utils/2fa'
 import { onMessage } from '~/utils/messaging'
 import type { ChannelData } from '~/entrypoints/popup/composables/types'
 
-const API_BASE_URL = 'http://localhost:7002'
+const API_BASE_URL = import.meta.env.DEV
+  ? (import.meta.env.VITE_API_BASE_URL || 'http://localhost:7002')
+  : 'https://aitubestats.com'
 
 export default defineBackground(() => {
   console.log('YouTube RSS Extractor background script loaded')
@@ -34,7 +36,7 @@ async function handleBatchSaveChannels(data: ChannelData[]) {
       return { success: true, message: 'No channels to save' }
     }
 
-    const tfaSecret = import.meta.env.VITE_TFA_SECRET || '963_SHARED_SECRET_KEY'
+    const tfaSecret = import.meta.env.VITE_TFA_SECRET || ''
     const step = getCurrentStep()
     const tfa = await generateTOTP(tfaSecret, step)
 
@@ -70,7 +72,6 @@ async function handleBatchSearchChannels(queries: string[]) {
 
     const res = await fetch(`${API_BASE_URL}/api/channels/batch?${searchParams.toString()}`, {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
     })
 
     if (!res.ok) {
