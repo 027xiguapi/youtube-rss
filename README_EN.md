@@ -35,6 +35,13 @@ A browser extension to extract RSS feeds and channel metadata from YouTube chann
 
 [Project Repository](https://github.com/027xiguapi/youtube-rss)
 
+### Related Links
+
+- [Dashboard](https://aitubestats.com/)
+- [RSS Search](https://aitubestats.com/youtube-rss)
+- [Channel ID Finder](https://aitubestats.com/channel-id-finder)
+- [YouTube Viewer](https://aitubestats.com/youtube-viewer)
+
 ### Development Mode
 
 1. Install dependencies:

@@ -35,6 +35,13 @@
 
 [项目地址](https://github.com/027xiguapi/youtube-rss)
 
+### 相关链接
+
+- [仪表盘](https://aitubestats.com/)
+- [RSS 搜索](https://aitubestats.com/youtube-rss)
+- [频道 ID 查询](https://aitubestats.com/channel-id-finder)
+- [YouTube 数据查看器](https://aitubestats.com/youtube-viewer)
+
 ### 开发模式
 
 1. 安装依赖：
