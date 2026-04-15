@@ -184,11 +184,27 @@
     "description": "Button label to download cookies"
   },
   "channelLinks": {
-    "message": "Channel Links",
-    "description": "Tool section title for channel links"
+    "message": "Other Links",
+    "description": "Tool section title for other links"
   },
   "download": {
     "message": "Download",
     "description": "Button label to download"
+  },
+  "home": {
+    "message": "Dashboard",
+    "description": "Home link label"
+  },
+  "rssSearch": {
+    "message": "RSS Search",
+    "description": "RSS search link label"
+  },
+  "channelIdFinder": {
+    "message": "Channel ID Finder",
+    "description": "Channel ID finder link label"
+  },
+  "youtubeViewer": {
+    "message": "YouTube Viewer",
+    "description": "YouTube viewer link label"
   }
 }

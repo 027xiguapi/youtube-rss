@@ -139,7 +139,7 @@ const emit = defineEmits<{
 
 .button-group {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 8px;
   padding: 16px 0;
 }

@@ -5,6 +5,17 @@ import { useI18n } from '../composables/useI18n'
 const store = useChannelStore()
 const { t } = useI18n()
 
+const API_BASE_URL = import.meta.env.DEV
+  ? (import.meta.env.VITE_API_BASE_URL || 'http://localhost:7002')
+  : 'https://aitubestats.com'
+
+const links = [
+  { href: '/', label: t('home') },
+  { href: '/youtube-rss', label: t('rssSearch') },
+  { href: '/channel-id-finder', label: t('channelIdFinder') },
+  { href: '/youtube-viewer', label: t('youtubeViewer') }
+]
+
 const exportYouTubeCookies = async () => {
   try {
     const [tab] = await browser.tabs.query({ active: true, currentWindow: true })
@@ -39,7 +50,18 @@ const exportYouTubeCookies = async () => {
 
       <div class="tool-group">
         <h3>{{ t('channelLinks') || 'Channel Links' }}</h3>
-        <!-- <a class="btn" href="https://mp.weixin.qq.com/s/UrnGRks6R-JJ4oZTdt0Xrw" target="_blank" rel="noreferrer">支持作者更新👍</a> -->
+        <div class="channel-links">
+          <a
+            v-for="(link, index) in links"
+            :key="link.href"
+            :href="`${API_BASE_URL}${link.href}`"
+            target="_blank"
+            rel="noreferrer"
+            class="btn-link"
+          >
+            {{index + 1}}. {{ link.label }}
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -97,11 +119,7 @@ const exportYouTubeCookies = async () => {
 }
 
 .btn-link {
-  padding: 8px 12px;
-  background: #f5f5f5;
   color: #065fd4;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
   cursor: pointer;
   font-size: 13px;
   text-align: left;

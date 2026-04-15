@@ -184,11 +184,27 @@
     "description": "下载 cookies 的按钮标签"
   },
   "channelLinks": {
-    "message": "频道链接",
-    "description": "频道链接的工具部分标题"
+    "message": "其他链接",
+    "description": "其他链接的工具部分标题"
   },
   "download": {
     "message": "下载",
     "description": "下载按钮标签"
+  },
+  "home": {
+    "message": "仪表盘",
+    "description": "首页链接标签"
+  },
+  "rssSearch": {
+    "message": "RSS 搜索",
+    "description": "RSS 搜索链接标签"
+  },
+  "channelIdFinder": {
+    "message": "频道 ID 查询",
+    "description": "频道 ID 查询链接标签"
+  },
+  "youtubeViewer": {
+    "message": "YouTube 数据查看器",
+    "description": "YouTube 数据查看器链接标签"
   }
 }
