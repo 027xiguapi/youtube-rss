@@ -39,6 +39,7 @@ const extractData = async () => {
 
 const getChannelsRss = async (tab: any) => {
   const response = await browser.tabs.sendMessage(tab.id, { action: 'getChannelsRss' })
+  console.log(response)
   if (response && response.channels) {
     store.setChannelsData(response.channels || [])
   }
@@ -74,11 +75,14 @@ onMounted(async () => {
     if (!tab.id) return
 
     const isFeed = tab.url?.includes('youtube.com/feed/channels') || false
+    const youtubeChannelRegex = /^https?:\/\/(www\.)?youtube\.com\/(@|c\/|channel\/)[a-zA-Z0-9_-]+$/i
 
     if (isFeed) {
       await store.loadCachedData()
-    } else {
+    } else if (tab.url && youtubeChannelRegex.test(tab.url)) {
       await extractChannelData(tab)
+    } else {
+      await store.loadCachedData()
     }
   } catch (e) {
     console.error('Error in onMounted:', e)

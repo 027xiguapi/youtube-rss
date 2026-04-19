@@ -27,7 +27,7 @@ const emit = defineEmits<{
   display: flex;
   flex-direction: column;
   gap: 16px;
-  max-height: calc(100vh - 150px);
+  max-height: calc(100vh - 170px);
 }
 
 .channels-header {

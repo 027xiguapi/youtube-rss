@@ -162,5 +162,65 @@
   "youtubeSubscriptions": {
     "message": "Abonnements YouTube",
     "description": "Texte de schéma pour l'exportation OPML"
+  },
+  "channels": {
+    "message": "Chaînes",
+    "description": "Étiquette de l'onglet pour les chaînes"
+  },
+  "tools": {
+    "message": "Outils",
+    "description": "Étiquette de l'onglet pour les outils"
+  },
+  "settings": {
+    "message": "Paramètres",
+    "description": "Étiquette de l'onglet pour les paramètres"
+  },
+  "exportCookies": {
+    "message": "Exporter les cookies YouTube",
+    "description": "Titre de la section outils pour exporter les cookies"
+  },
+  "downloadCookies": {
+    "message": "Télécharger les cookies",
+    "description": "Étiquette du bouton pour télécharger les cookies"
+  },
+  "channelLinks": {
+    "message": "Autres liens",
+    "description": "Titre de la section outils pour les autres liens"
+  },
+  "download": {
+    "message": "Télécharger",
+    "description": "Étiquette du bouton pour télécharger"
+  },
+  "home": {
+    "message": "Tableau de bord",
+    "description": "Étiquette du lien d'accueil"
+  },
+  "rssSearch": {
+    "message": "Recherche RSS",
+    "description": "Étiquette du lien de recherche RSS"
+  },
+  "channelIdFinder": {
+    "message": "Recherche d'ID de chaîne",
+    "description": "Étiquette du lien de recherche d'ID de chaîne"
+  },
+  "youtubeViewer": {
+    "message": "Visionneuse YouTube",
+    "description": "Étiquette du lien visionneuse YouTube"
+  },
+  "getChannelLinks": {
+    "message": "Obtenir les liens des chaînes",
+    "description": "Titre de la section pour obtenir les liens des chaînes de la page"
+  },
+  "getLinks": {
+    "message": "Obtenir les liens",
+    "description": "Étiquette du bouton pour obtenir les liens des chaînes"
+  },
+  "noChannelLinksFound": {
+    "message": "Aucun lien de chaîne trouvé sur cette page",
+    "description": "Message quand aucun lien de chaîne n'est trouvé"
+  },
+  "copyAllRSS": {
+    "message": "Copier tout le RSS",
+    "description": "Étiquette du bouton pour copier toutes les URL RSS"
   }
 }

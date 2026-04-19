@@ -206,5 +206,21 @@
   "youtubeViewer": {
     "message": "YouTube Viewer",
     "description": "YouTube viewer link label"
+  },
+  "getChannelLinks": {
+    "message": "Get Channel Links",
+    "description": "Tool section title for getting channel links from page"
+  },
+  "getLinks": {
+    "message": "Get Links",
+    "description": "Button label to get channel links"
+  },
+  "noChannelLinksFound": {
+    "message": "No channel links found on this page",
+    "description": "Message when no channel links are found"
+  },
+  "copyAllRSS": {
+    "message": "Copy All RSS",
+    "description": "Button label to copy all RSS URLs"
   }
 }

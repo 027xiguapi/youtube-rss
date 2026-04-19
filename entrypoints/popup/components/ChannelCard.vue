@@ -7,7 +7,7 @@ const props = defineProps<{
 }>()
 
 const getThumbnailUrl = () => {
-  return props.channel.avatar?.thumbnails?.[0]?.url || ''
+  return props.channel.avatar?.thumbnails?.[0]?.url?.replace('https://yt3.googleusercontent.com/', 'https://yt3.ggpht.com/') || ''
 }
 
 const getTitle = () => {

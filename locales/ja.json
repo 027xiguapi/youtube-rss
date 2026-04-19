@@ -162,5 +162,65 @@
   "youtubeSubscriptions": {
     "message": "YouTube 購読",
     "description": "OPML エクスポートのアウトラインテキスト"
+  },
+  "channels": {
+    "message": "チャンネル",
+    "description": "チャンネルタブのラベル"
+  },
+  "tools": {
+    "message": "ツール",
+    "description": "ツールタブのラベル"
+  },
+  "settings": {
+    "message": "設定",
+    "description": "設定タブのラベル"
+  },
+  "exportCookies": {
+    "message": "YouTube Cookieをエクスポート",
+    "description": "Cookieエクスポートツールセクションのタイトル"
+  },
+  "downloadCookies": {
+    "message": "Cookieをダウンロード",
+    "description": "Cookieをダウンロードするボタンのラベル"
+  },
+  "channelLinks": {
+    "message": "その他のリンク",
+    "description": "その他のリンクツールセクションのタイトル"
+  },
+  "download": {
+    "message": "ダウンロード",
+    "description": "ダウンロードボタンのラベル"
+  },
+  "home": {
+    "message": "ダッシュボード",
+    "description": "ホームリンクのラベル"
+  },
+  "rssSearch": {
+    "message": "RSS検索",
+    "description": "RSS検索リンクのラベル"
+  },
+  "channelIdFinder": {
+    "message": "チャンネルID検索",
+    "description": "チャンネルID検索リンクのラベル"
+  },
+  "youtubeViewer": {
+    "message": "YouTubeビューアー",
+    "description": "YouTubeビューアーリンクのラベル"
+  },
+  "getChannelLinks": {
+    "message": "チャンネルリンクを取得",
+    "description": "ページからチャンネルリンクを取得するツールセクションのタイトル"
+  },
+  "getLinks": {
+    "message": "リンクを取得",
+    "description": "チャンネルリンクを取得するボタンのラベル"
+  },
+  "noChannelLinksFound": {
+    "message": "このページにチャンネルリンクは見つかりません",
+    "description": "チャンネルリンクが見つからない場合のメッセージ"
+  },
+  "copyAllRSS": {
+    "message": "すべてのRSSをコピー",
+    "description": "すべてのRSS URLをコピーするボタンのラベル"
   }
 }

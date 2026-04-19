@@ -162,5 +162,65 @@
   "youtubeSubscriptions": {
     "message": "Suscripciones de YouTube",
     "description": "Texto de esquema para exportación OPML"
+  },
+  "channels": {
+    "message": "Canales",
+    "description": "Etiqueta de pestaña para canales"
+  },
+  "tools": {
+    "message": "Herramientas",
+    "description": "Etiqueta de pestaña para herramientas"
+  },
+  "settings": {
+    "message": "Configuración",
+    "description": "Etiqueta de pestaña para configuración"
+  },
+  "exportCookies": {
+    "message": "Exportar Cookies de YouTube",
+    "description": "Título de sección de herramientas para exportar cookies"
+  },
+  "downloadCookies": {
+    "message": "Descargar Cookies",
+    "description": "Etiqueta del botón para descargar cookies"
+  },
+  "channelLinks": {
+    "message": "Otros enlaces",
+    "description": "Título de sección de herramientas para otros enlaces"
+  },
+  "download": {
+    "message": "Descargar",
+    "description": "Etiqueta del botón para descargar"
+  },
+  "home": {
+    "message": "Panel",
+    "description": "Etiqueta del enlace de inicio"
+  },
+  "rssSearch": {
+    "message": "Búsqueda RSS",
+    "description": "Etiqueta del enlace de búsqueda RSS"
+  },
+  "channelIdFinder": {
+    "message": "Buscador de ID de canal",
+    "description": "Etiqueta del enlace buscador de ID de canal"
+  },
+  "youtubeViewer": {
+    "message": "Visor de YouTube",
+    "description": "Etiqueta del enlace visor de YouTube"
+  },
+  "getChannelLinks": {
+    "message": "Obtener enlaces de canales",
+    "description": "Título de sección para obtener enlaces de canales de la página"
+  },
+  "getLinks": {
+    "message": "Obtener enlaces",
+    "description": "Etiqueta del botón para obtener enlaces de canales"
+  },
+  "noChannelLinksFound": {
+    "message": "No se encontraron enlaces de canales en esta página",
+    "description": "Mensaje cuando no se encuentran enlaces de canales"
+  },
+  "copyAllRSS": {
+    "message": "Copiar todo RSS",
+    "description": "Etiqueta del botón para copiar todas las URL RSS"
   }
 }

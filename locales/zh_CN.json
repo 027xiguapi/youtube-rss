@@ -206,5 +206,21 @@
   "youtubeViewer": {
     "message": "YouTube 数据查看器",
     "description": "YouTube 数据查看器链接标签"
+  },
+  "getChannelLinks": {
+    "message": "获取频道链接",
+    "description": "从页面获取频道链接的工具部分标题"
+  },
+  "getLinks": {
+    "message": "获取链接",
+    "description": "获取频道链接的按钮标签"
+  },
+  "noChannelLinksFound": {
+    "message": "此页面上未找到频道链接",
+    "description": "未找到频道链接时的消息"
+  },
+  "copyAllRSS": {
+    "message": "复制所有 RSS",
+    "description": "复制所有 RSS URL 的按钮标签"
   }
 }

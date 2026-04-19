@@ -227,6 +227,21 @@ export default defineContentScript({
           return true
         }
   
+        if (message.action === 'getChannelLinks') {
+          const content = document.getElementById('content')!
+
+          // Get channel elements
+          const channelElements = [
+            ...content.querySelectorAll<HTMLAnchorElement>('yt-content-metadata-view-model:not([hidden]) a'),
+          ]
+          const uniqueHrefList = [...new Set(
+            channelElements.map(el => el.href).filter(href => href && href !== 'https://www.youtube.com/#')
+          )]
+
+          sendResponse({ urls: uniqueHrefList })
+          return true
+        }
+
         if (message.action === 'getChannelUrls') {
           const content = document.getElementById('content')!
           const channelElements = [

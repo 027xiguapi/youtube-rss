@@ -55,6 +55,12 @@ const saveCachedData = async () => {
 }
 
 const setChannelsData = (data: ChannelData[]) => {
+  for (const channel of data) {
+    const url = channel.avatar?.thumbnails?.[0]?.url
+    if (url) {
+      channel.avatar!.thumbnails![0].url = url.replace('https://yt3.googleusercontent.com/', 'https://yt3.ggpht.com/')
+    }
+  }
   channelsData.splice(0, channelsData.length, ...data)
   try {
     if (data.length === 0) return

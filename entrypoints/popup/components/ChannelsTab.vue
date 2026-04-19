@@ -63,6 +63,13 @@ const fetchRSSData = async () => {
   emit('extract-data')
 }
 
+const copyAllRSS = async () => {
+  const rssUrls = channelsData.map(ch => ch.rssUrl).filter(Boolean)
+  if (rssUrls.length > 0) {
+    await navigator.clipboard.writeText(rssUrls.join('\n'))
+  }
+}
+
 const emit = defineEmits<{
   'extract-data': []
 }>()
@@ -90,6 +97,7 @@ const emit = defineEmits<{
     <div v-if="channelsData.length > 0" class="button-group">
       <button @click="fetchRSSData" class="btn-primary">{{ t('fetchRSSData') }}</button>
       <button @click="downloadOPML" class="btn-primary">{{ t('downloadOPML') }}</button>
+      <button @click="copyAllRSS" class="btn-primary">{{ t('copyAllRSS') }}</button>
     </div>
 
     <div v-else class="status">
@@ -141,7 +149,8 @@ const emit = defineEmits<{
   display: flex;
   flex-direction: row;
   gap: 8px;
-  padding: 16px 0;
+  padding-top: 8px;
+  justify-content: center;
 }
 
 .btn-primary {

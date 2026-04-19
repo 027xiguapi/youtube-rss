@@ -162,5 +162,65 @@
   "youtubeSubscriptions": {
     "message": "YouTube 구독",
     "description": "OPML 내보내기의 개요 텍스트"
+  },
+  "channels": {
+    "message": "채널",
+    "description": "채널 탭 레이블"
+  },
+  "tools": {
+    "message": "도구",
+    "description": "도구 탭 레이블"
+  },
+  "settings": {
+    "message": "설정",
+    "description": "설정 탭 레이블"
+  },
+  "exportCookies": {
+    "message": "YouTube 쿠키 내보내기",
+    "description": "쿠키 내보내기 도구 섹션 제목"
+  },
+  "downloadCookies": {
+    "message": "쿠키 다운로드",
+    "description": "쿠키를 다운로드하는 버튼 레이블"
+  },
+  "channelLinks": {
+    "message": "기타 링크",
+    "description": "기타 링크 도구 섹션 제목"
+  },
+  "download": {
+    "message": "다운로드",
+    "description": "다운로드 버튼 레이블"
+  },
+  "home": {
+    "message": "대시보드",
+    "description": "홈 링크 레이블"
+  },
+  "rssSearch": {
+    "message": "RSS 검색",
+    "description": "RSS 검색 링크 레이블"
+  },
+  "channelIdFinder": {
+    "message": "채널 ID 검색",
+    "description": "채널 ID 검색 링크 레이블"
+  },
+  "youtubeViewer": {
+    "message": "YouTube 뷰어",
+    "description": "YouTube 뷰어 링크 레이블"
+  },
+  "getChannelLinks": {
+    "message": "채널 링크 가져오기",
+    "description": "페이지에서 채널 링크를 가져오는 도구 섹션 제목"
+  },
+  "getLinks": {
+    "message": "링크 가져오기",
+    "description": "채널 링크를 가져오는 버튼 레이블"
+  },
+  "noChannelLinksFound": {
+    "message": "이 페이지에서 채널 링크를 찾을 수 없습니다",
+    "description": "채널 링크를 찾을 수 없을 때의 메시지"
+  },
+  "copyAllRSS": {
+    "message": "모든 RSS 복사",
+    "description": "모든 RSS URL을 복사하는 버튼 레이블"
   }
 }
