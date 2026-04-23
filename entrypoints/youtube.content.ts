@@ -170,7 +170,7 @@ export default defineContentScript({
     
                   try {
                    const channel = await extractChannelData(href)
-                    if (channel?.externalId) {
+                    if (channel?.id) {
                       channels.push({
                         ...channel,
                       })
@@ -193,7 +193,7 @@ export default defineContentScript({
     
                   try {
                     const channel = await extractChannelData(href)
-                    if (channel?.externalId) {
+                    if (channel?.id) {
                       channels.push({
                         ...channel,
                       })

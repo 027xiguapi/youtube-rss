@@ -84,7 +84,7 @@ export default defineContentScript({
 
                 if (channelId && rssUrl) {
                   channels.push({
-                    externalId: channelId,
+                    id: channelId,
                     channelUrl: e.href,
                     title: channelName,
                     avatar: {

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { copyRSSUrl } from '../composables/useUtils'
+import { copyUrl } from '../composables/useUtils'
 import ActionBar from './ActionBar.vue'
 import type { ChannelData } from '../composables/types'
 
@@ -36,9 +36,9 @@ const getTitle = () => {
     </div>
 
     <div class="detail-content">
-      <div v-if="channel.externalId" class="field">
+      <div v-if="channel.id" class="field">
         <label>Channel ID:</label>
-        <code>{{ channel.externalId }}</code>
+        <code>{{ channel.id }}</code>
       </div>
 
       <div v-if="channel.channelUrl" class="field">
@@ -65,7 +65,7 @@ const getTitle = () => {
         <label>RSS URL:</label>
         <div class="rss-url">
           <a :href="channel.rssUrl" target="_blank" class="rss-link">RSS Feed</a>
-          <button @click="copyRSSUrl(channel.rssUrl)" class="copy-btn" title="Copy RSS URL">Copy</button>
+          <button @click="copyUrl(channel.rssUrl)" class="copy-btn" title="Copy RSS URL">Copy</button>
         </div>
       </div>
 

@@ -25,7 +25,7 @@ export async function extractChannelData(href: string) {
 
   if (channelId && rssUrl) {
     return {
-      externalId: channelId,
+      id: channelId,
       channelUrl: href,
       title: ogTitle,
       avatar: {

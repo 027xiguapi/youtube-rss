@@ -7,38 +7,44 @@ export default defineContentScript({
           try {
             let channelData: Record<string, any> = {}
 
-            // Extract ytInitialData
-            const ytInitialData = getYtInitialData() as any
-            if (!ytInitialData) {
-              sendResponse(channelData)
+            // 获取当前页面 HTML
+            const res = await fetch(window.location.href)
+            if (!res.ok) {
+              sendResponse({})
               return
             }
 
-            const metadata = ytInitialData.metadata.channelMetadataRenderer;
-            if (metadata) {
+            const html = await res.text()
+
+            const rssMatch = html.match(
+              /<link\srel="alternate"\stype="application\/rss\+xml"\stitle="RSS"\shref="(.+?)"/
+            )
+            const imageMatch = html.match(
+              /<link\srel="image_src"\shref="(.+?)"/
+            )
+            const canonicalMatch = html.match(
+              /<link\srel="canonical"\shref="https:\/\/www\.youtube\.com\/channel\/([^"]+)"/
+            )
+
+            const channelId = canonicalMatch?.[1] || ''
+            const rssUrl = rssMatch?.[1] || ''
+            const thumbnailUrl = imageMatch?.[1] || ''
+
+            if (channelId && rssUrl) {
               channelData = {
-                  externalId: metadata.externalId,
-                  channelUrl: metadata.channelUrl,
-                  title: metadata.title,
-                  
-                  categories: metadata.keywords, // 关键词通常作为分类参考
-                  description: metadata.description,
-                  content: metadata.description, // 接口中 content 暂用描述填充
-                  
-                  avatar: {
-                      thumbnails: metadata.avatar?.thumbnails || []
-                  },
-                  
-                  ownerUrls: metadata.ownerUrls || [],
-                  rssUrl: metadata.rssUrl,
-                  region: metadata.country,
-                  
-                  // 状态与时间信息
-                  hasYPP: !!metadata.isFamilySafe, // 仅作示例参考，实际需要检查 monetization 字段
-                  createdAt: new Date().toISOString(),
-                  updatedAt: new Date().toISOString()
+                id: channelId,
+                channelUrl: window.location.href,
+                title: document.title,
+                avatar: {
+                  thumbnails: thumbnailUrl ? [{ url: thumbnailUrl }] : [],
+                },
+                ownerUrls: [window.location.href],
+                rssUrl: rssUrl,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
               };
             }
+
             console.log('Extracted channel data:', channelData)
             sendResponse(channelData)
           } catch (e) {
@@ -51,21 +57,3 @@ export default defineContentScript({
     })
   },
 })
-
-function getYtInitialData() {
-  const scripts = document.querySelectorAll('script');
-  let data = null;
-
-  scripts.forEach(script => {
-    const text = script.textContent || '';
-    if (text.includes('var ytInitialData =')) {
-      try {
-        const jsonStr = text.split('var ytInitialData =')[1].split(';')[0].trim();
-        data = JSON.parse(jsonStr);
-      } catch (e) {
-        console.error("解析 ytInitialData 失败", e);
-      }
-    }
-  });
-  return data;
-}

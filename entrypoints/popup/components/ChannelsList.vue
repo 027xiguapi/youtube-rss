@@ -17,7 +17,7 @@ const emit = defineEmits<{
 <template>
   <div class="channels-list">
     <div class="channels-grid">
-      <ChannelCard v-for="channel in channels" :key="channel.externalId" :channel="channel" />
+      <ChannelCard v-for="channel in channels" :key="channel.id" :channel="channel" />
     </div>
   </div>
 </template>

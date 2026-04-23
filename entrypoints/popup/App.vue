@@ -20,7 +20,7 @@ const extractData = async () => {
     if (!tab.id) throw new Error('No active tab found')
 
     const isFeed = tab.url?.includes('youtube.com/feed/channels') || false
-    const youtubeChannelRegex = /^https?:\/\/(www\.)?youtube\.com\/(@|c\/|channel\/)[a-zA-Z0-9_-]+$/i
+    const youtubeChannelRegex = /^https?:\/\/(www\.)?youtube\.com\/(@|c\/|channel\/)[a-zA-Z0-9_%\-]+$/i
 
     if (isFeed) {
       await extractChannelsRss(tab)
@@ -39,7 +39,6 @@ const extractData = async () => {
 
 const getChannelsRss = async (tab: any) => {
   const response = await browser.tabs.sendMessage(tab.id, { action: 'getChannelsRss' })
-  console.log(response)
   if (response && response.channels) {
     store.setChannelsData(response.channels || [])
   }
@@ -64,6 +63,7 @@ const extractChannelsRss = async (tab: any) => {
 
 const extractChannelData = async (tab: any) => {
   const response = await browser.tabs.sendMessage(tab.id, { action: 'extractChannelData' })
+  console.log('Extracted channel data:', response)
   if (response) {
     store.setChannelsData([response])
   }
@@ -75,7 +75,7 @@ onMounted(async () => {
     if (!tab.id) return
 
     const isFeed = tab.url?.includes('youtube.com/feed/channels') || false
-    const youtubeChannelRegex = /^https?:\/\/(www\.)?youtube\.com\/(@|c\/|channel\/)[a-zA-Z0-9_-]+$/i
+    const youtubeChannelRegex = /^https?:\/\/(www\.)?youtube\.com\/(@|c\/|channel\/)[a-zA-Z0-9_%\-]+$/i
 
     if (isFeed) {
       await store.loadCachedData()

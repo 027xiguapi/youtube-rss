@@ -13,8 +13,8 @@ const error = ref('')
 // Getters
 const channelCount = computed(() => channelsData.length)
 
-const getChannelById = (externalId: string) => {
-  return channelsData.find((ch) => ch.externalId === externalId)
+const getChannelById = (id: string) => {
+  return channelsData.find((ch) => ch.id === id)
 }
 
 const getChannelsByOwnerUrls = (ownerUrls: string[]) => {
@@ -75,14 +75,14 @@ const setChannelsData = (data: ChannelData[]) => {
 }
 
 const addChannel = (channel: ChannelData) => {
-  const exists = channelsData.some((ch) => ch.externalId === channel.externalId)
+  const exists = channelsData.some((ch) => ch.id === channel.id)
   if (!exists) {
     channelsData.push(channel)
   }
 }
 
-const updateChannel = (externalId: string, updates: Partial<ChannelData>) => {
-  const index = channelsData.findIndex((ch) => ch.externalId === externalId)
+const updateChannel = (id: string, updates: Partial<ChannelData>) => {
+  const index = channelsData.findIndex((ch) => ch.id === id)
   if (index !== -1) {
     channelsData[index] = { ...channelsData[index], ...updates }
   }
