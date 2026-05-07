@@ -1,11 +1,86 @@
 import { sendMessage } from '~/utils/messaging'
+import { extractChannelData } from '~/utils/youtubeExtractor'
 
 export default defineContentScript({
     matches: ['https://www.youtube.com/*'],
-  
+
     main() {
       // RSS icon SVG
       const RSS_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="6.18" cy="17.82" r="2.18"/><path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"/></svg>`
+
+      const showChannelDialog = async (channelLink: HTMLAnchorElement) => {
+        const dialog = document.createElement('dialog')
+        dialog.style.cssText = `
+          padding: 24px;
+          border-radius: 12px;
+          border: 1px solid #444;
+          background: #1a1a1a;
+          color: #e0e0e0;
+          max-width: 520px;
+          width: 90%;
+          z-index: 999999;
+          font-size: 14px;
+          line-height: 1.6;
+        `
+        dialog.innerHTML = `<p style="text-align:center;color:#888;">Loading channel info...</p>`
+        document.body.appendChild(dialog)
+        dialog.showModal()
+
+        dialog.addEventListener('click', (e) => {
+          if (e.target === dialog) { dialog.close(); dialog.remove() }
+        })
+
+        try {
+          const channel = await extractChannelData(channelLink.href)
+          if (!channel) {
+            dialog.innerHTML = `<p style="text-align:center;color:#f66;">Failed to fetch channel data</p>`
+            return
+          }
+
+          const fields: { label: string; value: string }[] = []
+          if (channel.id) fields.push({ label: 'Channel ID', value: channel.id })
+          if (channel.title) fields.push({ label: 'Title', value: channel.title })
+          if (channel.channelUrl) fields.push({ label: 'URL', value: channel.channelUrl })
+          if (channel.rssUrl) fields.push({ label: 'RSS Feed', value: channel.rssUrl })
+
+          const fieldHtml = fields.map(f => `
+            <div style="display:flex;flex-direction:column;gap:2px;">
+              <span style="font-size:12px;color:#888;">${f.label}</span>
+              <span style="word-break:break-all;color:#e0e0e0;">${f.value}</span>
+            </div>
+          `).join('<hr style="border:none;border-top:1px solid #333;margin:4px 0;">')
+
+          dialog.innerHTML = `
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <h3 style="margin:0;font-size:16px;color:#fff;">Channel Details</h3>
+                <button id="closeBtn" style="
+                  background:none;border:none;color:#888;font-size:20px;
+                  cursor:pointer;padding:0;line-height:1;
+                ">&times;</button>
+              </div>
+              ${fieldHtml}
+              <button id="copyBtn" style="
+                margin-top:4px;padding:8px 16px;border-radius:8px;
+                border:1px solid #555;background:#333;color:#fff;
+                cursor:pointer;font-size:13px;
+              ">Copy RSS URL</button>
+            </div>
+          `
+
+          dialog.querySelector('#closeBtn')!.addEventListener('click', () => { dialog.close(); dialog.remove() })
+          dialog.querySelector('#copyBtn')!.addEventListener('click', async () => {
+            if (channel.rssUrl) {
+              await navigator.clipboard.writeText(channel.rssUrl)
+              const btn = dialog.querySelector('#copyBtn')!
+              btn.textContent = 'Copied!'
+              setTimeout(() => { btn.textContent = 'Copy RSS URL' }, 2000)
+            }
+          })
+        } catch (err) {
+          dialog.innerHTML = `<p style="text-align:center;color:#f66;">Error: ${err}</p>`
+        }
+      }
 
       // Add RSS button to channel links in yt-content-metadata-view-model
       const addRssButtons = () => {
@@ -29,7 +104,7 @@ export default defineContentScript({
 
           const rssBtn = document.createElement('a')
           rssBtn.href = '#'
-          rssBtn.title = 'Copy RSS Feed'
+          rssBtn.title = 'View Channel Info'
           rssBtn.innerHTML = RSS_ICON
           rssBtn.style.cssText = `
             display: inline-flex;
@@ -38,37 +113,15 @@ export default defineContentScript({
             color: #909090;
             text-decoration: none;
             cursor: pointer;
-            vertical-align: text-top;;
+            vertical-align: text-top;
           `
           rssBtn.addEventListener('mouseenter', () => (rssBtn.style.color = '#f00'))
           rssBtn.addEventListener('mouseleave', () => (rssBtn.style.color = '#909090'))
 
-          rssBtn.addEventListener('click', async (e) => {
+          rssBtn.addEventListener('click', (e) => {
             e.preventDefault()
             e.stopPropagation()
-            rssBtn.style.color = '#080'
-            rssBtn.title = 'Loading...'
-
-            try {
-              const res = await fetch(channelLink.href)
-              if (!res.ok) { rssBtn.title = 'Failed'; return }
-              const html = await res.text()
-              const match = html.match(/<link\srel="alternate"\stype="application\/rss\+xml"\stitle="RSS"\shref="(.+?)"/)
-              if (match?.[1]) {
-                await navigator.clipboard.writeText(match[1])
-                // rssBtn.title = 
-                alert('Copied!')
-              } else {
-                // rssBtn.title = 'No RSS found'
-              }
-            } catch {
-              // rssBtn.title = 'Error'
-            } finally {
-              // setTimeout(() => {
-              //   rssBtn.style.color = '#909090'
-              //   rssBtn.title = 'Copy RSS Feed'
-              // }, 2000)
-            }
+            showChannelDialog(channelLink)
           })
 
           channelLink.parentElement!.appendChild(rssBtn)
