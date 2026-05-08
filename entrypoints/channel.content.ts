@@ -90,8 +90,13 @@ function injectChannelElements() {
 export default defineContentScript({
   matches: ['https://www.youtube.com/@*', 'https://www.youtube.com/c/*', 'https://www.youtube.com/channel/*'],
   main() {
-    // Initial delay to let YouTube SPA render
-    setTimeout(injectChannelElements, 1500)
+    const run = () => setTimeout(injectChannelElements, 1500)
+
+    // Initial load
+    run()
+
+    // Re-run on YouTube SPA navigation
+    document.addEventListener('yt-navigate-finish', run)
 
     browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
       if (message.action === 'extractChannelData') {

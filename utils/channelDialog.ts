@@ -5,16 +5,31 @@ const RSS_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
 function renderChannelFields(channel: NonNullable<Awaited<ReturnType<typeof extractChannelData>>>) {
   const fields: { label: string; value: string }[] = []
   if (channel.id) fields.push({ label: 'Channel ID', value: channel.id })
-  if (channel.title) fields.push({ label: 'Title', value: channel.title })
-  if (channel.channelUrl) fields.push({ label: 'URL', value: channel.channelUrl })
+  if (channel.title) fields.push({ label: 'Channel Name', value: channel.title })
+  if (channel.channelUrl) fields.push({ label: 'Channel URL', value: channel.channelUrl })
   if (channel.rssUrl) fields.push({ label: 'RSS Feed', value: channel.rssUrl })
+  if (channel.channelUrl) {
+    const match = channel.channelUrl.match(/@[\w.-]+/)
+    if (match) {
+      fields.push({ label: 'ViewStats', value: `https://www.viewstats.com/${match[0]}/channelytics` })
+    }
+  }
+  if (channel.id) {
+    fields.push({ label: 'Social Blade', value: `https://socialblade.com/youtube/channel/${channel.id}` })
+  }
+
+  if (channel.id) {
+    fields.push({ label: 'AI Tube Stats', value: `https://aitubestats.com/zh/channels/${channel.id}` })
+  }
+
+  const linkLabels = ['URL', 'ViewStats', 'Social Blade', 'AI Tube Stats']
 
   return fields.map(f => `
     <div style="display:flex;flex-direction:column;gap:2px;">
       <span style="font-size:12px;color:#888;">${f.label}</span>
       <div style="display:flex;align-items:center;gap:6px;">
         <span class="field-value" style="flex:1;word-break:break-all;color:#e0e0e0;cursor:pointer;" data-value="${f.value}" title="Click to copy">${f.value}</span>
-        ${f.label === 'URL' ? `<a href="${f.value}" target="_blank" rel="noopener" style="
+        ${linkLabels.includes(f.label) ? `<a href="${f.value}" target="_blank" rel="noopener" style="
           color:#909090;text-decoration:none;cursor:pointer;flex-shrink:0;
           display:inline-flex;align-items:center;
         " title="Open in new tab">
