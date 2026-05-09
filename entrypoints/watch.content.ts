@@ -2,6 +2,8 @@ const RSS_BTN_ID = 'channel-rss-btn'
 const STATS_WRAPPER_ID = 'video-stats-wrapper'
 
 import { showChannelDialog, RSS_ICON } from '~/utils/channelDialog'
+import { extractChannelData } from '~/utils/youtubeExtractor'
+import { sendMessage } from '~/utils/messaging'
 
 function getViewsAndEstimateRevenue() {
   const viewText = document.querySelector('ytd-video-primary-info-renderer .view-count')?.textContent || '';
@@ -123,6 +125,18 @@ function injectChannelElements() {
     showChannelDialog(channelUrl)
   })
   container.appendChild(btn)
+
+  // Extract and auto-save channel data
+  const channelLink = document.querySelector<HTMLAnchorElement>('ytd-channel-name #text-container yt-formatted-string#text a')
+  const channelUrl = channelLink?.href
+  if (channelUrl) {
+    extractChannelData(channelUrl).then(channel => {
+      if (channel) {
+        sendMessage('BATCH_SAVE_CHANNELS', { data: [channel] })
+          .catch(err => console.error('Failed to auto-save channel:', err))
+      }
+    })
+  }
 }
 
 export default defineContentScript({

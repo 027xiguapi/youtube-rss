@@ -45,7 +45,16 @@ export default defineContentScript({
           rssBtn.addEventListener('click', (e) => {
             e.preventDefault()
             e.stopPropagation()
-            showChannelDialog(channelLink.href)
+            const channelUrl = channelLink?.href
+            showChannelDialog(channelUrl)
+            if (channelUrl) {
+              extractChannelData(channelUrl).then(channel => {
+                if (channel) {
+                  sendMessage('BATCH_SAVE_CHANNELS', { data: [channel] })
+                    .catch(err => console.error('Failed to auto-save channel:', err))
+                }
+              })
+            }
           })
 
           channelLink.parentElement!.appendChild(rssBtn)

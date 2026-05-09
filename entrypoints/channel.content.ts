@@ -3,6 +3,7 @@ const RSS_BTN_ID = 'channel-rss-btn'
 
 import { showChannelDialog, RSS_ICON } from '~/utils/channelDialog'
 import { extractChannelData } from '~/utils/youtubeExtractor'
+import { sendMessage } from '~/utils/messaging'
 
 function detectYPP(): boolean {
   // Join/membership button in the channel actions area — only visible when channel has YPP
@@ -85,6 +86,15 @@ function injectChannelElements() {
     showChannelDialog(window.location.href)
   })
   titleH1.appendChild(btn)
+
+  // Extract and auto-save channel data
+  extractChannelData(window.location.href).then(channel => {
+    if (channel) {
+      (channel as any).hasYPP = detectYPP()
+      sendMessage('BATCH_SAVE_CHANNELS', { data: [channel] })
+        .catch(err => console.error('Failed to auto-save channel:', err))
+    }
+  })
 }
 
 export default defineContentScript({

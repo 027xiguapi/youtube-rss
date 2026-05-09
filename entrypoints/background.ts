@@ -64,9 +64,18 @@ async function handleBatchSearchChannels(queries: string[]) {
       return { success: true, data: [] }
     }
 
+    const validQueries = queries.filter(q => {
+      if (!q.startsWith('https://www.youtube.com/')) return true
+      return /^https:\/\/www\.youtube\.com\/@/.test(q)
+    })
+
+    if (validQueries.length === 0) {
+      return { success: true, data: [] }
+    }
+
     const searchParams = new URLSearchParams()
 
-    for (const q of queries) {
+    for (const q of validQueries) {
       searchParams.append('q', q)
     }
 
