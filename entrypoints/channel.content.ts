@@ -91,7 +91,7 @@ function injectChannelElements() {
   extractChannelData(window.location.href).then(channel => {
     if (channel) {
       (channel as any).hasYPP = detectYPP()
-      sendMessage('BATCH_SAVE_CHANNELS', { data: [channel] })
+      sendMessage('BATCH_SAVE_CHANNELS', [channel])
         .catch(err => console.error('Failed to auto-save channel:', err))
     }
   })

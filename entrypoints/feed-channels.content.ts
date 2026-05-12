@@ -121,7 +121,7 @@ function injectGetRssButton() {
 
       // 1. Query DB for existing channels
       label.innerText = '查询数据库中...'
-      const searchResult: any = await sendMessage('BATCH_SEARCH_CHANNELS', { data: channelUrls })
+      const searchResult: any = await sendMessage('BATCH_SEARCH_CHANNELS', channelUrls)
       const existingMap = new Map<string, any>()
       if (searchResult?.success && Array.isArray(searchResult.data)) {
         for (const ch of searchResult.data) {
@@ -156,7 +156,7 @@ function injectGetRssButton() {
         const newData = allChannels.slice(existingMap.size)
         if (newData.length > 0) {
           label.innerText = '保存新频道中...'
-          await sendMessage('BATCH_SAVE_CHANNELS', { data: newData })
+          await sendMessage('BATCH_SAVE_CHANNELS', newData)
         }
       }
 

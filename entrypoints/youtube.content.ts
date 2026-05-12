@@ -50,7 +50,7 @@ export default defineContentScript({
             if (channelUrl) {
               extractChannelData(channelUrl).then(channel => {
                 if (channel) {
-                  sendMessage('BATCH_SAVE_CHANNELS', { data: [channel] })
+                  sendMessage('BATCH_SAVE_CHANNELS', [channel])
                     .catch(err => console.error('Failed to auto-save channel:', err))
                 }
               })
